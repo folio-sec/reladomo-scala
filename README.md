@@ -1,6 +1,6 @@
 # Reladomo for Scala
 
-[![Build Status](https://travis-ci.com/seratch/reladomo-scala.svg?token=Z8KBgyknhgcdXVEv2sYZ&branch=master)](https://travis-ci.com/seratch/reladomo-scala)
+[![Build Status](https://travis-ci.org/Folio-sec/reladomo-scala.svg?branch=master)](https://travis-ci.org/Folio-sec/reladomo-scala)
 
 ## Reladomo
 
