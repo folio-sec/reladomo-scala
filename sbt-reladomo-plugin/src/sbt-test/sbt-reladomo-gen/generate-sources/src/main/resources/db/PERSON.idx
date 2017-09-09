@@ -1,0 +1,2 @@
+alter table PERSON add constraint PERSON_PK primary key (PERSON_ID);
+

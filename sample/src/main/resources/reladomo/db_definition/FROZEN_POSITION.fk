@@ -1,0 +1,7 @@
+alter table FROZEN_POSITION add constraint FROZEN_POSITION_fk_0 foreign key (
+    PROD_SEC_ID_I
+)
+references PRODUCT(
+    PROD_ID
+);
+

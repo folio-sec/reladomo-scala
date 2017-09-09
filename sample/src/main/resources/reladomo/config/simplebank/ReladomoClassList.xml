@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Mithra objectType="transactional"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="/reladomo/reladomoobject.xsd">
+    <MithraObjectResource name="Customer"/>
+    <MithraObjectResource name="CustomerAccount" />
+</Mithra>

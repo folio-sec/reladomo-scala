@@ -1,0 +1,7 @@
+alter table CUSTOMER_ACCOUNT add constraint CUSTOMER_ACCOUNT_fk_0 foreign key (
+    CUSTOMER_ID
+)
+references CUSTOMER(
+    CUSTOMER_ID
+);
+

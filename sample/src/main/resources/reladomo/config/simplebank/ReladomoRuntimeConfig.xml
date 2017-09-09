@@ -1,0 +1,6 @@
+<MithraRuntime>
+    <ConnectionManager className="com.folio_sec.example.util.MariaDbConnectionManager">
+        <MithraObjectConfiguration className="com.folio_sec.example.domain.simplebank.Customer" cacheType="partial"/>
+        <MithraObjectConfiguration className="com.folio_sec.example.domain.simplebank.CustomerAccount" cacheType="partial"/>
+    </ConnectionManager>
+</MithraRuntime>

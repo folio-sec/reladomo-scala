@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MithraObject objectType="transactional"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="/reladomo/reladomoobject.xsd">
+
+    <PackageName>com.folio_sec.example.domain.simplebank</PackageName>
+    <ClassName>CustomerAccount</ClassName>
+    <DefaultTable>CUSTOMER_ACCOUNT</DefaultTable>
+
+    <!-- see: https://goldmansachs.github.io/reladomo/primaryKeyGenerator/PrimaryKeyGenerator.html -->
+    <Attribute name="accountId" javaType="int" columnName="ACCOUNT_ID"
+               primaryKey="true"
+               primaryKeyGeneratorStrategy="Max"/>
+    <Attribute name="customerId" javaType="int" columnName="CUSTOMER_ID" nullable="false"/>
+    <Attribute name="accountName" javaType="String" columnName="ACCOUNT_NAME" nullable="false" maxLength="48"/>
+    <Attribute name="accountType" javaType="String" columnName="ACCOUNT_TYPE" nullable="false" maxLength="16"/>
+    <Attribute name="areaId" javaType="int" nullable="true" columnName="AREA_ID"/>
+    <Attribute name="balance" javaType="double" columnName="BALANCE"/>
+
+</MithraObject>

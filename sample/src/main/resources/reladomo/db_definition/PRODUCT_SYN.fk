@@ -1,0 +1,7 @@
+alter table PRODUCT_SYN add constraint PRODUCT_SYN_fk_0 foreign key (
+    PROD_ID
+)
+references PRODUCT(
+    PROD_ID
+);
+

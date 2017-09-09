@@ -1,0 +1,2 @@
+alter table PRODUCT_SYN add constraint PRODUCT_SYN_PK primary key (PROD_ID, SYN_TYPE);
+

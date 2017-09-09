@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MithraRuntime xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/reladomo/reladomoobject.xsd">
+    <ConnectionManager className="com.folio_sec.reladomo.scala_api.configuration.DbConnectionManager">
+        <Property name="databaseTypeClassName" value="com.gs.fw.common.mithra.databasetype.H2DatabaseType"/>
+        <Property name="jdbcDriverClassName" value="org.h2.Driver"/>
+
+        <Property name="parentConfigLocation" value="reladomo/runtime/SimpleBankObjectConfigs.xml"/>
+    </ConnectionManager>
+</MithraRuntime>

@@ -1,0 +1,27 @@
+
+language: scala
+
+scala:
+  - 2.11.11
+  - 2.12.3
+
+jdk:
+  - oraclejdk8
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt/launchers
+    - $HOME/.sbt/boot
+
+script:
+  - travis_retry ./travis.sh
+  - find $HOME/.sbt -name "*.lock" | xargs rm
+  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
+  - find $HOME/.ivy2/cache -name "*SNAPSHOT*" | xargs rm -rf
+
+matrix:
+  include:
+    - scala: scripted-test

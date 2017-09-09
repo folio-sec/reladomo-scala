@@ -1,0 +1,41 @@
+# runs reladomoGen task and assert generated sources
+
+> sourceGenerators
+
+> compile
+
+# assert generated java sources
+$ exists target/scala-2.12/src_managed/main/kata/domain/TaskAbstract.java
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/PersonAbstract.java
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/PersonData.java
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/PersonDatabaseObjectAbstract.java
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/PersonFinder.java
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/PersonListAbstract.java
+
+# assert generated scala sources
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/scala_api/Person.scala
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/scala_api/PersonFinder.scala
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/scala_api/PersonList.scala
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/scala_api/PersonServiceAbstract.scala
+
+> compile:doc
+> publishLocal
+
+# assert generated java sources
+$ exists target/scala-2.12/src_managed/main/kata/domain/TaskAbstract.java
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/PersonAbstract.java
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/PersonData.java
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/PersonDatabaseObjectAbstract.java
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/PersonFinder.java
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/PersonListAbstract.java
+
+# assert generated scala sources
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/scala_api/Person.scala
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/scala_api/PersonFinder.scala
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/scala_api/PersonList.scala
+$ exists target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/scala_api/PersonServiceAbstract.scala
+
+> clean
+> test
+
+#$ pause

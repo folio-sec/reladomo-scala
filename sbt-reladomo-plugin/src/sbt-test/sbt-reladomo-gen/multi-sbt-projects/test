@@ -1,0 +1,23 @@
+# runs reladomoGen task and assert generated sources
+
+> sourceGenerators
+
+> common/compile
+> common/compile:doc
+
+# assert generated java sources
+$ exists common/target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/PersonAbstract.java
+$ exists common/target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/PersonData.java
+$ exists common/target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/PersonDatabaseObjectAbstract.java
+$ exists common/target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/PersonFinder.java
+$ exists common/target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/PersonListAbstract.java
+
+# assert generated scala sources
+$ exists common/target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/scala_api/Person.scala
+$ exists common/target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/scala_api/PersonFinder.scala
+$ exists common/target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/scala_api/PersonList.scala
+$ exists common/target/scala-2.12/src_managed/main/com/folio_sec/example/domain/people/scala_api/PersonServiceAbstract.scala
+
+> other/compile
+
+#$ pause

@@ -1,0 +1,5 @@
+alter table PET add constraint PET_PK primary key (PET_ID);
+
+alter table PET drop index PET_IDX0;
+create index PET_IDX0 on PET(OWNER_ID);
+

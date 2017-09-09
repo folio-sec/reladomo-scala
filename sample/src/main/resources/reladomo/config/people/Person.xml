@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<MithraObject objectType="transactional"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="/reladomo/reladomoobject.xsd">
+
+    <PackageName>com.folio_sec.example.domain.people</PackageName>
+    <ClassName>Person</ClassName>
+    <DefaultTable>PERSON</DefaultTable>
+
+    <!--
+    <Attribute name="personId"
+               javaType="int"
+               columnName="PERSON_ID"
+               primaryKey="true"
+               primaryKeyGeneratorStrategy="SimulatedSequence">
+        <SimulatedSequence sequenceName="Person"
+                           sequenceObjectFactoryName="com.folio_sec.example.common.util.ObjectSequenceObjectFactory"
+                           hasSourceAttribute="false"
+                           batchSize="1"
+                           initialValue="1"
+                           incrementSize="1"/>
+   -->
+    <Attribute name="personId"
+               javaType="int"
+               columnName="PERSON_ID"
+               primaryKey="true"
+               primaryKeyGeneratorStrategy="Max">
+    </Attribute>
+    <Attribute name="firstName" javaType="String" columnName="FIRST_NAME" nullable="false" maxLength="64"/>
+    <Attribute name="lastName" javaType="String" columnName="LAST_NAME" nullable="false" maxLength="64"/>
+    <Attribute name="country" javaType="String" columnName="COUNTRY" nullable="false" maxLength="48"/>
+
+    <Relationship name="pets"
+                  relatedObject="Pet"
+                  cardinality="one-to-many"
+                  relatedIsDependent="false">
+        this.personId = Pet.ownerId
+    </Relationship>
+</MithraObject>

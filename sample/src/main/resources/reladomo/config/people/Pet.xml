@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<MithraObject objectType="transactional"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="/reladomo/reladomoobject.xsd">
+
+    <PackageName>com.folio_sec.example.domain.people</PackageName>
+    <ClassName>Pet</ClassName>
+    <DefaultTable>PET</DefaultTable>
+
+    <Attribute name="petId" javaType="int" columnName="PET_ID" primaryKey="true" primaryKeyGeneratorStrategy="Max"/>
+    <Attribute name="name" javaType="String" columnName="NAME" nullable="false" maxLength="64"/>
+    <Attribute name="ownerId" javaType="int" columnName="OWNER_ID" primaryKey="false"/>
+
+    <Relationship name="owner" relatedObject="Person" cardinality="many-to-one">
+        this.ownerId = Person.personId
+    </Relationship>
+</MithraObject>

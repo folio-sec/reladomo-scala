@@ -1,0 +1,7 @@
+alter table PET add constraint PET_fk_0 foreign key (
+    OWNER_ID
+)
+references PERSON(
+    PERSON_ID
+);
+

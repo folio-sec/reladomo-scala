@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MithraObject objectType="transactional"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="/reladomo/reladomoobject.xsd">
+
+    <PackageName>com.folio_sec.example.domain.simplebank</PackageName>
+    <ClassName>Customer</ClassName>
+    <DefaultTable>CUSTOMER</DefaultTable>
+
+    <!-- see: https://goldmansachs.github.io/reladomo/primaryKeyGenerator/PrimaryKeyGenerator.html -->
+    <Attribute name="customerId" javaType="int" columnName="CUSTOMER_ID"
+               primaryKey="true"
+               primaryKeyGeneratorStrategy="Max"/>
+    <Attribute name="firstName" javaType="String" columnName="FIRST_NAME" nullable="false" maxLength="64"/>
+    <Attribute name="lastName" javaType="String" columnName="LAST_NAME" nullable="false" maxLength="64"/>
+    <Attribute name="country" javaType="String" columnName="COUNTRY" nullable="true" maxLength="48"/>
+
+    <Relationship name="accounts"
+                  relatedObject="CustomerAccount"
+                  cardinality="one-to-many"
+                  reverseRelationshipName="customer"
+                  relatedIsDependent="true">
+        this.customerId = CustomerAccount.customerId
+    </Relationship>
+
+</MithraObject>

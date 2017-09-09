@@ -1,0 +1,7 @@
+alter table BITEMPORAL_ORDER_ITEM add constraint BITEMPORAL_ORDER_ITEM_fk_0 foreign key (
+    PRODUCT_ID
+)
+references PRODUCT(
+    PROD_ID
+);
+

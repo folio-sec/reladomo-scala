@@ -1,0 +1,5 @@
+package com.folio_sec.example.domain.bitemporal.scala_api
+
+object BitemporalOrderItemService extends BitemporalOrderItemService
+
+trait BitemporalOrderItemService extends BitemporalOrderItemServiceAbstract {}
