@@ -87,15 +87,15 @@ object ReladomoPlugin extends AutoPlugin {
     Def.task {
       val dbDefinitionGeneratorFactory: DbDefinitionGeneratorFactory = {
         val clazz = Class.forName(reladomoDbDefinitionGeneratorFactoryClassName.value)
-        clazz.newInstance().asInstanceOf[DbDefinitionGeneratorFactory]
+        clazz.getDeclaredConstructor().newInstance().asInstanceOf[DbDefinitionGeneratorFactory]
       }
       val javaCodeGeneratorFactory: JavaCodeGeneratorFactory = {
         val clazz = Class.forName(reladomoJavaCodeGeneratorFactoryClassName.value)
-        clazz.newInstance().asInstanceOf[JavaCodeGeneratorFactory]
+        clazz.getDeclaredConstructor().newInstance().asInstanceOf[JavaCodeGeneratorFactory]
       }
       val scalaCodeGeneratorFactory: ScalaCodeGeneratorFactory = {
         val clazz = Class.forName(reladomoScalaCodeGeneratorFactoryClassName.value)
-        clazz.newInstance().asInstanceOf[ScalaCodeGeneratorFactory]
+        clazz.getDeclaredConstructor().newInstance().asInstanceOf[ScalaCodeGeneratorFactory]
       }
 
       val classListXmlFiles: Seq[File] = {
