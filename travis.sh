@@ -18,6 +18,9 @@ if [[ ${TRAVIS_SCALA_VERSION} = "scripted-test" ]]; then
 else
   sbt ++${TRAVIS_SCALA_VERSION} \
       clean \
+      "scalafmt::test" \
+      "test:scalafmt::test" \
+      "sbt:scalafmt::test" \
       reladomoScalaCommon/test \
       reladomoScalaTwitterCommon/test
 fi
