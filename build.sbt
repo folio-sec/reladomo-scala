@@ -9,7 +9,8 @@ lazy val baseSettings = Seq(
   incOptions := sbt.inc.IncOptions.Default,
   transitiveClassifiers in Global := Seq(Artifact.SourceClassifier),
   pomIncludeRepository := (_ => false),
-  scalafmtOnCompile := true, fork in Test := true,
+  scalafmtOnCompile := true,
+  fork in Test := true,
   pomExtra := thePomExtra,
   publishTo := doPublishTo(version.value)
 )
@@ -71,7 +72,8 @@ lazy val sbtReladomoPlugin = (project in file("sbt-reladomo-plugin"))
       reladomogenUtil,
       scalaTest
     ),
-    scriptedLaunchOpts := { scriptedLaunchOpts.value ++
+    scriptedLaunchOpts := {
+      scriptedLaunchOpts.value ++
       Seq(
         "-Xmx1024M",
         "-Dplugin.version=" + version.value,
