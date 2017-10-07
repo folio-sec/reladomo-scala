@@ -1,5 +1,5 @@
-lazy val reladomoScalaV  = sys.env.get("RELEASE_VERSION").getOrElse("16.5.7-SNAPSHOT")
-lazy val reladomoV       = "16.5.1"
+lazy val reladomoScalaV  = sys.env.get("RELEASE_VERSION").getOrElse("16.6.0-SNAPSHOT")
+lazy val reladomoV       = "16.6.1"
 lazy val twitterBinV     = "6.45"
 lazy val theOrganization = "com.folio-sec"
 
