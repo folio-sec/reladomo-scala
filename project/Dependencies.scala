@@ -7,7 +7,7 @@ object Dependencies {
 
   lazy val twitterUtilVersion    = sys.env.get("TWITTER_UTIL_VERSION").getOrElse("6.45.0")
   lazy val twitterUtilBinVersion = toBinV(twitterUtilVersion)
-  lazy val reladomoVersion     = "16.5.1"
+  lazy val reladomoVersion     = "16.6.1"
   lazy val reladomoBinVersion = toBinV(reladomoVersion)
 
   lazy val reladomo        = "com.goldmansachs.reladomo" % "reladomo" % reladomoVersion % Compile excludeAll(
@@ -21,8 +21,8 @@ object Dependencies {
   lazy val twitterUtilCore = "com.twitter"       %% "util-core"             % twitterUtilVersion % Compile
   lazy val slf4jApi        = "org.slf4j"         %  "slf4j-api"             % "1.7.25"  % Compile
   lazy val jodaTime        = "joda-time"         %  "joda-time"             % "2.9.9"   % Compile
-  lazy val jodaConvert     = "org.joda"          %  "joda-convert"          % "1.8.2"   % Compile
-  lazy val scalikejdbc     = "org.scalikejdbc"   %% "scalikejdbc"           % "3.0.2"   % Test
+  lazy val jodaConvert     = "org.joda"          %  "joda-convert"          % "1.9.2"   % Compile
+  lazy val scalikejdbc     = "org.scalikejdbc"   %% "scalikejdbc"           % "3.1.0"   % Test
   lazy val h2              = "com.h2database"    %  "h2"                    % "1.4.196" % Test
   lazy val logbackClassic  = "ch.qos.logback"    %  "logback-classic"       % "1.2.3"   % Test
   // reladomo generator depends on ant
