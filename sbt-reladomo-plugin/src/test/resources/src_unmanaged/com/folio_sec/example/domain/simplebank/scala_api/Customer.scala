@@ -38,9 +38,8 @@ case class NewCustomer(firstName: String, lastName: String, country: Option[Stri
   def customerId(): Option[Int] = if (underlying.isInMemoryAndNotInserted) None else Some(underlying.getCustomerId)
 }
 
-case class Customer private (override val underlying: JavaCustomer, customerId: Int, firstName: String, lastName: String, country: Option[String], zipCode: Option[Int]) extends TransactionalObject {
+case class Customer private (override val underlying: JavaCustomer, firstName: String, lastName: String, country: Option[String], zipCode: Option[Int]) extends TransactionalObject {
   override lazy val savedUnderlying: JavaCustomer = {
-    underlying.setCustomerId(customerId)
     underlying.setFirstName(firstName)
     underlying.setLastName(lastName)
     underlying.setCountry(country.orNull[String])
@@ -50,6 +49,7 @@ case class Customer private (override val underlying: JavaCustomer, customerId: 
     }
     underlying
   }
+  lazy val customerId: Int = underlying.getCustomerId
   // NOTE: This method always returns the latest relationship without issuing a query
   def accounts = CustomerAccountList(underlying.getAccounts())
 }
@@ -57,7 +57,6 @@ object Customer {
   def apply(underlying: JavaCustomer): Customer = {
     new Customer(
       underlying = underlying,
-      customerId = underlying.getCustomerId,
       firstName = underlying.getFirstName,
       lastName = underlying.getLastName,
       country = if (underlying.isCountryNull) None else Option(underlying.getCountry),

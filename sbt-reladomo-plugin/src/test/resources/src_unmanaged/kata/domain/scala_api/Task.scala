@@ -33,20 +33,19 @@ case class NewTask(name: String, status: String) extends NewTemporalTransactiona
   def taskId(): Option[Int] = if (underlying.isInMemoryAndNotInserted) None else Some(underlying.getTaskId)
 }
 
-case class Task private (override val underlying: JavaTask, taskId: Int, name: String, status: String) extends TemporalTransactionalObject {
+case class Task private (override val underlying: JavaTask, name: String, status: String) extends TemporalTransactionalObject {
   override lazy val savedUnderlying: JavaTask = {
-    underlying.setTaskId(taskId)
     underlying.setName(name)
     underlying.setStatus(status)
     underlying
   }
+  lazy val taskId: Int = underlying.getTaskId
 
 }
 object Task {
   def apply(underlying: JavaTask): Task = {
     new Task(
       underlying = underlying,
-      taskId = underlying.getTaskId,
       name = underlying.getName,
       status = underlying.getStatus
     )

@@ -34,7 +34,7 @@ import com.gs.fw.common.mithra.remote.RemoteMithraService;
 import com.gs.fw.common.mithra.transaction.BatchUpdateOperation;
 import com.gs.fw.common.mithra.transaction.UpdateOperation;
 /**
-* This file was automatically generated using Mithra 16.5.1. Please do not modify it.
+* This file was automatically generated using Mithra 16.6.1. Please do not modify it.
 * Add custom logic to its subclass instead.
 */
 public abstract class TaskDatabaseObjectAbstract extends MithraAbstractDatedTransactionalDatabaseObject

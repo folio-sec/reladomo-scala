@@ -40,4 +40,15 @@
         <MithraObjectConfiguration className="com.folio_sec.example.domain.bitemporal.ProductSynonym" cacheType="partial"/>
     </ConnectionManager>
 
+    <ConnectionManager className="com.folio_sec.reladomo.scala_api.configuration.DbConnectionManager">
+        <Property name="databaseTypeClassName" value="com.gs.fw.common.mithra.databasetype.H2DatabaseType"/>
+        <Property name="jdbcDriverClassName" value="org.h2.Driver"/>
+        <Property name="jdbcUrl" value="jdbc:h2:mem:issue003;MODE=MySQL;TRACE_LEVEL_FILE=2;TRACE_LEVEL_SYSTEM_OUT=2"/>
+        <Property name="jdbcUsername" value="user"/>
+        <Property name="jdbcPassword" value="pass"/>
+
+        <MithraObjectConfiguration className="com.folio_sec.example.domain.issue003.BitemporalChildObject" cacheType="partial"/>
+        <MithraObjectConfiguration className="com.folio_sec.example.domain.issue003.ParentObject" cacheType="partial"/>
+    </ConnectionManager>
+
 </MithraRuntime>

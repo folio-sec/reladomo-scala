@@ -72,9 +72,8 @@ class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
         |  def customerId(): Option[Int] = if (underlying.isInMemoryAndNotInserted) None else Some(underlying.getCustomerId)
         |}
         |
-        |case class Customer private (override val underlying: JavaCustomer, customerId: Int, firstName: String, lastName: String, country: Option[String], zipCode: Option[Int]) extends TransactionalObject {
+        |case class Customer private (override val underlying: JavaCustomer, firstName: String, lastName: String, country: Option[String], zipCode: Option[Int]) extends TransactionalObject {
         |  override lazy val savedUnderlying: JavaCustomer = {
-        |    underlying.setCustomerId(customerId)
         |    underlying.setFirstName(firstName)
         |    underlying.setLastName(lastName)
         |    underlying.setCountry(country.orNull[String])
@@ -84,6 +83,7 @@ class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
         |    }
         |    underlying
         |  }
+        |  lazy val customerId: Int = underlying.getCustomerId
         |  // NOTE: This method always returns the latest relationship without issuing a query
         |  def accounts = CustomerAccountList(underlying.getAccounts())
         |}
@@ -91,7 +91,6 @@ class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
         |  def apply(underlying: JavaCustomer): Customer = {
         |    new Customer(
         |      underlying = underlying,
-        |      customerId = underlying.getCustomerId,
         |      firstName = underlying.getFirstName,
         |      lastName = underlying.getLastName,
         |      country = if (underlying.isCountryNull) None else Option(underlying.getCountry),
@@ -340,5 +339,143 @@ class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
       futureApi = "twitter"
     )
     taskGenerator.generate()
+  }
+
+  it should "fix issue #3 - ParentObject generation" in {
+    val generator = new DefaultScalaCodeGenerator(
+      mithraObjectXmlPath = "src/test/resources/reladomo/issue003/ParentObject.xml",
+      scalaApiPackageSuffix = "scala_api",
+      scalaApiModifiableFilesOutputDir = "src/test/resources/generated/",
+      scalaApiUnmodifiableFilesOutputDir = "src/test/resources/src_unmanaged/",
+      futureApi = "twitter"
+    )
+    val sourceCode = generator.generateTxObject(generator.loadMithraObject())
+    val expectedSourceCode =
+      """/*
+        | * This file was automatically generated using folio-sec/sbt-reladomo-plugin. Please do not modify it.
+        | */
+        |package com.folio_sec.example.domain.issue003.scala_api
+        |
+        |import com.folio_sec.reladomo.scala_api._
+        |import com.folio_sec.reladomo.scala_api.util.TimestampUtil
+        |import com.folio_sec.reladomo.scala_api.exception.ReladomoException
+        |import com.gs.fw.common.mithra.MithraBusinessException
+        |import com.folio_sec.example.domain.issue003.{ParentObject => JavaParentObject}
+        |import com.folio_sec.example.domain.issue003.{ParentObjectList => JavaParentObjectList}
+        |import scala.collection.JavaConverters._
+        |
+        |case class NewParentObject(name: String) extends NewTemporalTransactionalObject {
+        |  override lazy val underlying: JavaParentObject = {
+        |    val underlyingObj = new JavaParentObject(TimestampUtil.infinityDate())
+        |    underlyingObj.setName(name)
+        |    underlyingObj
+        |  }
+        |  def insert()(implicit tx: Transaction): ParentObject = {
+        |    underlying.insert()
+        |    ParentObject(underlying)
+        |  }
+        |  def insertForRecovery()(implicit tx: Transaction): ParentObject = {
+        |    underlying.insertForRecovery()
+        |    ParentObject(underlying)
+        |  }
+        |  def cascadeInsert()(implicit tx: Transaction): ParentObject = {
+        |    underlying.cascadeInsert()
+        |    ParentObject(underlying)
+        |  }
+        |  def id(): Option[Int] = if (underlying.isInMemoryAndNotInserted) None else Some(underlying.getId)
+        |}
+        |
+        |case class ParentObject private (override val underlying: JavaParentObject, name: String) extends TemporalTransactionalObject {
+        |  override lazy val savedUnderlying: JavaParentObject = {
+        |    underlying.setName(name)
+        |    underlying
+        |  }
+        |  lazy val id: Int = underlying.getId
+        |  // NOTE: This method always returns the latest relationship without issuing a query
+        |  def relatedObject(asOfDate: java.sql.Timestamp): Option[BitemporalChildObject] = Option(underlying.getRelatedObject(asOfDate)).map(BitemporalChildObject(_))
+        |}
+        |object ParentObject {
+        |  def apply(underlying: JavaParentObject): ParentObject = {
+        |    new ParentObject(
+        |      underlying = underlying,
+        |      name = underlying.getName
+        |    )
+        |  }
+        |}
+        |""".stripMargin
+
+    sourceCode should equal(expectedSourceCode)
+  }
+
+  it should "fix issue #3" in {
+    val generator = new DefaultScalaCodeGenerator(
+      mithraObjectXmlPath = "src/test/resources/reladomo/issue003/BitemporalChildObject.xml",
+      scalaApiPackageSuffix = "scala_api",
+      scalaApiModifiableFilesOutputDir = "src/test/resources/generated/",
+      scalaApiUnmodifiableFilesOutputDir = "src/test/resources/src_unmanaged/",
+      futureApi = "twitter"
+    )
+    val sourceCode = generator.generateTxObject(generator.loadMithraObject())
+    val expectedSourceCode =
+      """/*
+        | * This file was automatically generated using folio-sec/sbt-reladomo-plugin. Please do not modify it.
+        | */
+        |package com.folio_sec.example.domain.issue003.scala_api
+        |
+        |import com.folio_sec.reladomo.scala_api._
+        |import com.folio_sec.reladomo.scala_api.util.TimestampUtil
+        |import com.folio_sec.reladomo.scala_api.exception.ReladomoException
+        |import com.gs.fw.common.mithra.MithraBusinessException
+        |import com.folio_sec.example.domain.issue003.{BitemporalChildObject => JavaBitemporalChildObject}
+        |import com.folio_sec.example.domain.issue003.{BitemporalChildObjectList => JavaBitemporalChildObjectList}
+        |import scala.collection.JavaConverters._
+        |
+        |case class NewBitemporalChildObject(name: String, state: Int, parentObjectId: Int) extends NewBiTemporalTransactionalObject {
+        |  override lazy val underlying: JavaBitemporalChildObject = {
+        |    val underlyingObj = new JavaBitemporalChildObject(TimestampUtil.now())
+        |    underlyingObj.setName(name)
+        |    underlyingObj.setState(state)
+        |    underlyingObj.setParentObjectId(parentObjectId)
+        |    underlyingObj
+        |  }
+        |  def insert()(implicit tx: Transaction): BitemporalChildObject = {
+        |    underlying.insert()
+        |    BitemporalChildObject(underlying)
+        |  }
+        |  def insertForRecovery()(implicit tx: Transaction): BitemporalChildObject = {
+        |    underlying.insertForRecovery()
+        |    BitemporalChildObject(underlying)
+        |  }
+        |  def cascadeInsert()(implicit tx: Transaction): BitemporalChildObject = {
+        |    underlying.cascadeInsert()
+        |    BitemporalChildObject(underlying)
+        |  }
+        |  def id(): Option[Int] = if (underlying.isInMemoryAndNotInserted) None else Some(underlying.getId)
+        |}
+        |
+        |case class BitemporalChildObject private (override val underlying: JavaBitemporalChildObject, name: String, state: Int, parentObjectId: Int) extends BiTemporalTransactionalObject {
+        |  override lazy val savedUnderlying: JavaBitemporalChildObject = {
+        |    underlying.setName(name)
+        |    underlying.setState(state)
+        |    underlying.setParentObjectId(parentObjectId)
+        |    underlying
+        |  }
+        |  lazy val id: Int = underlying.getId
+        |  // NOTE: This method always returns the latest relationship without issuing a query
+        |  def parentObject: Option[ParentObject] = Option(underlying.getParentObject()).map(ParentObject(_))
+        |}
+        |object BitemporalChildObject {
+        |  def apply(underlying: JavaBitemporalChildObject): BitemporalChildObject = {
+        |    new BitemporalChildObject(
+        |      underlying = underlying,
+        |      name = underlying.getName,
+        |      state = underlying.getState,
+        |      parentObjectId = underlying.getParentObjectId
+        |    )
+        |  }
+        |}
+        |""".stripMargin
+
+    sourceCode should equal(expectedSourceCode)
   }
 }
