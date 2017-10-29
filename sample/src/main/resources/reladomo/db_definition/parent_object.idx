@@ -1,0 +1,2 @@
+alter table parent_object add constraint parent_object_pk primary key (id, out_at);
+

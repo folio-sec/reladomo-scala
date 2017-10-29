@@ -1,0 +1,5 @@
+package com.folio_sec.example.domain.issue003.scala_api
+
+object BitemporalChildObjectService extends BitemporalChildObjectService
+
+trait BitemporalChildObjectService extends BitemporalChildObjectServiceAbstract {}
