@@ -32,9 +32,7 @@ trait TransactionalObjectService[TxObject <: TransactionalObject,
                                  MithraTxObject <: MithraTransactionalObject] {
 
   type TxObjectListFinder =
-    TransactionalObjectFinder[TxObject, TxObjectList, MithraTxObject]#ListFinder[TxObject,
-                                                                                 TxObjectList,
-                                                                                 MithraTxObject]
+    TransactionalObjectFinder[TxObject, TxObjectList, MithraTxObject]#ListFinder[TxObject, TxObjectList, MithraTxObject]
 
   val finder: TransactionalObjectFinder[TxObject, TxObjectList, MithraTxObject]
 

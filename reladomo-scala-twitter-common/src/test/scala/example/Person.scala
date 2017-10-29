@@ -133,7 +133,6 @@ trait PersonFinder extends TransactionalObjectFinder[Person, PersonList, com.fol
 import com.folio_sec.reladomo.scala_api.service.twitter.TransactionalObjectService
 
 object PersonService extends PersonService
-trait PersonService
-    extends TransactionalObjectService[Person, PersonList, com.folio_sec.example.domain.people.Person] {
+trait PersonService extends TransactionalObjectService[Person, PersonList, com.folio_sec.example.domain.people.Person] {
   override val finder: PersonFinder = PersonFinder
 }

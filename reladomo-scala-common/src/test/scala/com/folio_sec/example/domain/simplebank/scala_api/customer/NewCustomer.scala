@@ -21,10 +21,7 @@ import com.folio_sec.reladomo.scala_api.{ NewTransactionalObject, Transaction }
 
 import scala.collection.JavaConverters._
 
-case class NewCustomer(firstName: String,
-                       lastName: String,
-                       country: String,
-                       accounts: Seq[CustomerAccount] = Seq.empty)
+case class NewCustomer(firstName: String, lastName: String, country: String, accounts: Seq[CustomerAccount] = Seq.empty)
     extends NewTransactionalObject {
 
   override val underlying: com.folio_sec.example.domain.simplebank.Customer = {
