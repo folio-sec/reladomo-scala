@@ -1,6 +1,8 @@
 #!/bin/bash
 if [[ ${TRAVIS_SCALA_VERSION} = "scripted-test" ]]; then
   sbt clean "project reladomoScalaCommon" +publishLocal \
+  && export TWITTER_UTIL_VERSION=17.10.0 \
+  && sbt clean "project reladomoScalaTwitterCommon" +publishLocal \
   && export TWITTER_UTIL_VERSION=7.1.0 \
   && sbt clean "project reladomoScalaTwitterCommon" +publishLocal \
   && export TWITTER_UTIL_VERSION=7.0.0 \
