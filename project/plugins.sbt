@@ -1,6 +1,6 @@
 libraryDependencies += "org.scala-sbt" % "scripted-plugin" % sbtVersion.value
 
-addSbtPlugin("io.get-coursier"   % "sbt-coursier"    % "1.0.0-RC12")
+//addSbtPlugin("io.get-coursier"   % "sbt-coursier"    % "1.0.0-RC12-1")
 addSbtPlugin("com.lucidchart"    % "sbt-scalafmt"    % "1.12")
 addSbtPlugin("com.typesafe"      % "sbt-mima-plugin" % "0.1.17")
 addSbtPlugin("com.timushev.sbt"  % "sbt-updates"     % "0.3.1")

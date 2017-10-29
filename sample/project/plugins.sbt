@@ -3,4 +3,4 @@ lazy val reladomoScalaV = sys.env.get("RELEASE_VERSION").getOrElse("16.6.0-SNAPS
 addSbtPlugin("com.folio-sec" % "sbt-reladomo-plugin" % reladomoScalaV)
 
 addSbtPlugin("com.lucidchart"  % "sbt-scalafmt" % "1.12")
-addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-RC12")
+//addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-RC12-1")
