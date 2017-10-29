@@ -7,7 +7,7 @@ lazy val root = (project in file("."))
   .settings(
     organization := "com.example",
     name := "sbt-reladomo-plugin-example",
-    scalaVersion := "2.12.3",
+    scalaVersion := "2.12.4",
     version := "0.1.0-SNAPSHOT",
     libraryDependencies ++= Seq(
       theOrganization             %% "reladomo-scala-common"                         % reladomoScalaV,

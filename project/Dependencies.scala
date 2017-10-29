@@ -3,7 +3,7 @@ import sbt._
 object Dependencies {
   def toBinV(v: String) = v.split("\\.").init.mkString(".")
 
-  lazy val latestScalaVersion = "2.12.3"
+  lazy val latestScalaVersion = "2.12.4"
 
   lazy val twitterUtilVersion    = sys.env.get("TWITTER_UTIL_VERSION").getOrElse("6.45.0")
   lazy val twitterUtilBinVersion = toBinV(twitterUtilVersion)
