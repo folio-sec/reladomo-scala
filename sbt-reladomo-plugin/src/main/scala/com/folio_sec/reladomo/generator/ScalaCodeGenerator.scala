@@ -49,17 +49,29 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
 
   def generateTxObject(obj: MithraObject): String = {
     if (obj != null && obj.getClassName != null) {
-      val newAttributes        = obj.getAttributes.asScala.filter(_.getPrimaryKeyGeneratorStrategy == null)
-      val primaryKeyAttributes = obj.getAttributes.asScala.filter(_.getPrimaryKeyGeneratorStrategy != null)
-      val primaryKeyAccessors = {
-        primaryKeyAttributes.map { attr =>
+      val newAttributesForInsertion = obj.getAttributes.asScala.filter(_.getPrimaryKeyGeneratorStrategy == null)
+      val nonPrimaryKeyAttributes   = obj.getAttributes.asScala.filterNot(_.isPrimaryKey)
+
+      val primaryKeyAccessorsInNewObject = {
+        val allAttributes                   = obj.getAttributes.asScala
+        val primaryKeyGenStrategyAttributes = allAttributes.filter(_.getPrimaryKeyGeneratorStrategy != null)
+        primaryKeyGenStrategyAttributes.map { attr =>
           val (name, scalaType, getterName) =
             (attr.getName, toScalaType(attr.getJavaType), toGetterName(attr.getJavaType, attr.getName))
           s"  def ${name}(): Option[${scalaType}] = if (underlying.isInMemoryAndNotInserted) None else Some(underlying.${getterName})"
-
         }
       }.mkString("\n")
-      val allAttributes = obj.getAttributes.asScala
+
+      val primaryKeyAccessorsInExistingObject = {
+        val allAttributes        = obj.getAttributes.asScala
+        val primaryKeyAttributes = allAttributes.filter(_.isPrimaryKey)
+        primaryKeyAttributes.map { attr =>
+          val (name, scalaType, getterName) =
+            (attr.getName, toScalaType(attr.getJavaType), toGetterName(attr.getJavaType, attr.getName))
+          s"  lazy val ${name}: ${scalaType} = underlying.${getterName}"
+        }
+      }.mkString("\n")
+
       s"""/*
          | * This file was automatically generated using folio-sec/sbt-reladomo-plugin. Please do not modify it.
          | */
@@ -73,7 +85,7 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
          |import ${obj.getPackageName}.{${obj.getClassName}List => Java${obj.getClassName}List}
          |import scala.collection.JavaConverters._
          |
-         |case class New${obj.getClassName}(${toScalaConstructorDefinitionCode(newAttributes)}) extends New${getBaseTraitNamePrefix(
+         |case class New${obj.getClassName}(${toScalaConstructorDefinitionCode(newAttributesForInsertion)}) extends New${getBaseTraitNamePrefix(
            obj
          )}TransactionalObject {
          |  override lazy val underlying: Java${obj.getClassName} = {
@@ -82,7 +94,7 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
          else if (obj.getAsOfAttributes.size == 2)
            "TimestampUtil.now()"
          else ""})
-         |${toSetterCalls("underlyingObj", newAttributes)}
+         |${toSetterCalls("underlyingObj", newAttributesForInsertion)}
          |    underlyingObj
          |  }
          |  def insert()(implicit tx: Transaction): ${obj.getClassName} = {
@@ -97,23 +109,26 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
          |    underlying.cascadeInsert()
          |    ${obj.getClassName}(underlying)
          |  }
-         |${primaryKeyAccessors}
+         |${primaryKeyAccessorsInNewObject}
          |}
          |
-         |case class ${obj.getClassName} private (override val underlying: Java${obj.getClassName}, ${toScalaConstructorDefinitionCode(
-           allAttributes
+         |case class ${obj.getClassName} private (override val underlying: Java${obj.getClassName}${if (nonPrimaryKeyAttributes.isEmpty)
+           ""
+         else ","} ${toScalaConstructorDefinitionCode(
+           nonPrimaryKeyAttributes
          )}) extends ${getBaseTraitNamePrefix(obj)}TransactionalObject {
          |  override lazy val savedUnderlying: Java${obj.getClassName} = {
-         |${toSetterCalls("underlying", allAttributes)}
+         |${toSetterCalls("underlying", nonPrimaryKeyAttributes)}
          |    underlying
          |  }
+         |${primaryKeyAccessorsInExistingObject}
          |${toRelationships(obj.getRelationships.asScala)}
          |}
          |object ${obj.getClassName} {
          |  def apply(underlying: Java${obj.getClassName}): ${obj.getClassName} = {
          |    new ${obj.getClassName}(
          |      underlying = underlying,
-         |${toScalaConstructorCode(allAttributes)}
+         |${toScalaConstructorCode(nonPrimaryKeyAttributes)}
          |    )
          |  }
          |}
@@ -513,23 +528,31 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
   }
 
   private def toMethodArguments(relationship: Relationship): String = {
-    relationship.getParameters
-      .split(",")
-      .map(_.trim.split("\\s+").toSeq)
-      .map {
-        case Seq(javaTypeName, name)    => s"${name}: ${toScalaType(javaTypeName)}"
-        case Seq(javaTypeName, name, _) => s"${name}: ${toScalaType(javaTypeName)}"
-      }
-      .mkString(", ")
+    if (relationship.getParameters == null) {
+      ""
+    } else {
+      relationship.getParameters
+        .split(",")
+        .map(_.trim.split("\\s+").toSeq)
+        .map {
+          case Seq(javaTypeName, name)    => s"${name}: ${toScalaType(javaTypeName)}"
+          case Seq(javaTypeName, name, _) => s"${name}: ${toScalaType(javaTypeName)}"
+        }
+        .mkString(", ")
+    }
   }
   private def toParameterNameCSV(relationship: Relationship): String = {
-    relationship.getParameters
-      .split(",")
-      .map { v =>
-        val Array(typeName, name) = v.trim.split("\\s+")
-        if (typeName.contains("<")) s"${name}.asJava" else name
-      }
-      .mkString(", ")
+    if (relationship.getParameters == null) {
+      ""
+    } else {
+      relationship.getParameters
+        .split(",")
+        .map { v =>
+          val Array(typeName, name) = v.trim.split("\\s+")
+          if (typeName.contains("<")) s"${name}.asJava" else name
+        }
+        .mkString(", ")
+    }
   }
 
   private def parametersExists(relationship: Relationship): Boolean = {
@@ -541,7 +564,7 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
       .map { relationship =>
         relationship.getCardinality match {
           case "one-to-many" =>
-            val (objPt1, objPt2) = {
+            val (objPt1: String, objPt2: String) = {
               if (relationship.getReturnType != null) {
                 (s"underlying.${toGetterName(relationship.getReturnType, relationship.getName)}", "")
               } else {
@@ -559,22 +582,30 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
                  |  def ${relationship.getName} = ${objPt1}()${objPt2}""".stripMargin
             }
           case "many-to-one" | "one-to-one" =>
-            val (objPt1, objPt2) = {
-              if (relationship.getReturnType != null) {
-                (s"underlying.${toGetterName(relationship.getReturnType, relationship.getName)}", "")
-              } else {
-                (s"${relationship.getRelatedObject}(underlying.${toGetterName(relationship.getReturnType, relationship.getName)}",
-                 ")")
-              }
-            }
+            val relationshipName       = relationship.getName
+            val relationType           = relationship.getRelatedObject
+            val relationshipReturnType = relationship.getReturnType
+
+            val methodArguments = toMethodArguments(relationship)
+            val getterName      = toGetterName(relationshipReturnType, relationship.getName)
+            val getterArguments = toParameterNameCSV(relationship)
+
             if (parametersExists(relationship)) {
-              s"""  // NOTE: This method always returns the latest relationship without issuing a query
-                 |  def ${relationship.getName}(${toMethodArguments(relationship)}) = ${objPt1}(${toParameterNameCSV(
-                   relationship
-                 )})${objPt2}""".stripMargin
+              if (relationshipReturnType != null) {
+                s"""  // NOTE: This method always returns the latest relationship without issuing a query
+                   |  def ${relationshipName}(${methodArguments}): Option[${relationType}] = underlying.${getterName}(${getterArguments})""".stripMargin
+              } else {
+                s"""  // NOTE: This method always returns the latest relationship without issuing a query
+                   |  def ${relationshipName}(${methodArguments}): Option[${relationType}] = Option(underlying.${getterName}(${getterArguments})).map(${relationType}(_))""".stripMargin
+              }
             } else {
-              s"""  // NOTE: This method always returns the latest relationship without issuing a query
-                 |  def ${relationship.getName} = ${objPt1}()${objPt2}""".stripMargin
+              if (relationshipReturnType != null) {
+                s"""  // NOTE: This method always returns the latest relationship without issuing a query
+                   |  def ${relationshipName}: Option[${relationType}] = underlying.${getterName}()""".stripMargin
+              } else {
+                s"""  // NOTE: This method always returns the latest relationship without issuing a query
+                   |  def ${relationshipName}: Option[${relationType}] = Option(underlying.${getterName}()).map(${relationType}(_))""".stripMargin
+              }
             }
           case _ => ""
         }

@@ -1,0 +1,23 @@
+<MithraObject objectType="transactional"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="mithraobject.xsd">
+
+    <PackageName>kata.domain</PackageName>
+    <ClassName>ParentObject</ClassName>
+    <DefaultTable>parent_object</DefaultTable>
+
+    <AsOfAttribute name="processingDate" fromColumnName="in_at" toColumnName="out_at"
+                   toIsInclusive="false"
+                   isProcessingDate="true"
+                   infinityDate="[kata.util.TimestampProvider.getInfinityDate()]"
+                   defaultIfNotSpecified="[kata.util.TimestampProvider.getInfinityDate()]" />
+
+    <Attribute name="id" javaType="int" columnName="id" primaryKey="true"  primaryKeyGeneratorStrategy="Max"/>
+    <Attribute name="name" javaType="String" columnName="name" nullable="false"/>
+
+    <Relationship name="relatedObject" relatedObject="BitemporalChildObject" cardinality="one-to-one" parameters="Timestamp asOfDate">
+        this.id = BitemporalChildObject.parentObjectId and
+        BitemporalChildObject.businessDate = {asOfDate}
+    </Relationship>
+
+</MithraObject>

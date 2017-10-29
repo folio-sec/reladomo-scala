@@ -195,4 +195,36 @@ create index FROZEN_POSITION_IDX0 on FROZEN_POSITION(PROD_SEC_ID_I, THRU_Z, OUT_
 """.execute.apply()
 
   }
+
+  def initializeIssue003Database() = {
+    import scalikejdbc._
+    Class.forName("org.h2.Driver")
+    ConnectionPool.add('issue003, "jdbc:h2:mem:issue003;MODE=MySQL", "user", "pass")
+    implicit val session = NamedAutoSession('issue003)
+    sql"""
+create table parent_object
+(
+    id int not null,
+    name varchar(255) not null,
+    in_at timestamp not null,
+    out_at timestamp not null
+);
+alter table parent_object add constraint parent_object_pk primary key (id, out_at);
+
+create table bitemporal_child_object
+(
+    id int not null,
+    name varchar(255) not null,
+    state int,
+    parent_object_id int,
+    from_at timestamp not null,
+    thru_at timestamp not null,
+    in_at timestamp not null,
+    out_at timestamp not null
+);
+alter table bitemporal_child_object add constraint bitemporal_child_object_pk primary key (id, thru_at, out_at);
+create index bitemporal_child_object_idx0 on bitemporal_child_object(parent_object_id, thru_at, out_at);
+""".execute.apply()
+  }
+
 }

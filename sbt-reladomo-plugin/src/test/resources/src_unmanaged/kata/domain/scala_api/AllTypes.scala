@@ -76,9 +76,8 @@ case class NewAllTypes(id: Int, booleanValue: Boolean, byteValue: Byte, shortVal
 
 }
 
-case class AllTypes private (override val underlying: JavaAllTypes, id: Int, booleanValue: Boolean, byteValue: Byte, shortValue: Short, charValue: Char, intValue: Int, longValue: Long, floatValue: Float, doubleValue: Double, dateValue: java.util.Date, timestampValue: java.sql.Timestamp, stringValue: String, byteArrayValue: Array[Byte], nullableByteValue: Option[Byte], nullableShortValue: Option[Short], nullableCharValue: Option[Char], nullableIntValue: Option[Int], nullableLongValue: Option[Long], nullableFloatValue: Option[Float], nullableDoubleValue: Option[Double], nullableDateValue: Option[java.util.Date], nullableTimestampValue: Option[java.sql.Timestamp], nullableStringValue: Option[String], nullableByteArrayValue: Option[Array[Byte]]) extends TransactionalObject {
+case class AllTypes private (override val underlying: JavaAllTypes, booleanValue: Boolean, byteValue: Byte, shortValue: Short, charValue: Char, intValue: Int, longValue: Long, floatValue: Float, doubleValue: Double, dateValue: java.util.Date, timestampValue: java.sql.Timestamp, stringValue: String, byteArrayValue: Array[Byte], nullableByteValue: Option[Byte], nullableShortValue: Option[Short], nullableCharValue: Option[Char], nullableIntValue: Option[Int], nullableLongValue: Option[Long], nullableFloatValue: Option[Float], nullableDoubleValue: Option[Double], nullableDateValue: Option[java.util.Date], nullableTimestampValue: Option[java.sql.Timestamp], nullableStringValue: Option[String], nullableByteArrayValue: Option[Array[Byte]]) extends TransactionalObject {
   override lazy val savedUnderlying: JavaAllTypes = {
-    underlying.setId(id)
     underlying.setBooleanValue(booleanValue)
     underlying.setByteValue(byteValue)
     underlying.setShortValue(shortValue)
@@ -125,13 +124,13 @@ case class AllTypes private (override val underlying: JavaAllTypes, id: Int, boo
     underlying.setNullableByteArrayValue(nullableByteArrayValue.orNull[Array[Byte]])
     underlying
   }
+  lazy val id: Int = underlying.getId
 
 }
 object AllTypes {
   def apply(underlying: JavaAllTypes): AllTypes = {
     new AllTypes(
       underlying = underlying,
-      id = underlying.getId,
       booleanValue = underlying.isBooleanValue,
       byteValue = underlying.getByteValue,
       shortValue = underlying.getShortValue,

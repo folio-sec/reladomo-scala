@@ -1,0 +1,2 @@
+alter table OBJECT_SEQUENCE add constraint OBJECT_SEQUENCE_PK primary key (SEQUENCE_NAME);
+

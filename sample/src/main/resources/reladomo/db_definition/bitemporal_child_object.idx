@@ -1,0 +1,5 @@
+alter table bitemporal_child_object add constraint bitemporal_child_object_pk primary key (id, thru_at, out_at);
+
+alter table bitemporal_child_object drop index bitemporal_child_object_idx0;
+create index bitemporal_child_object_idx0 on bitemporal_child_object(parent_object_id, thru_at, out_at);
+
