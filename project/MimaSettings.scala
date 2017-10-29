@@ -4,14 +4,14 @@ import com.typesafe.tools.mima.plugin.MimaKeys.{mimaPreviousArtifacts, mimaRepor
 
 object MimaSettings {
 
-  // The `previousVersions` must be *ALL* the previous versions to be binary compatible (e.g. Set("16.5.0", "16.5.1") for "16.5.2-SNAPSHOT").
+  // The `previousVersions` must be *ALL* the previous versions to be binary compatible (e.g. Set("16.6.0", "16.6.1") for "16.6.2-SNAPSHOT").
   // The following bad scenario is the reason we must obey the rule:
-  //  - your build is toward 16.5.2 release and the `previousVersions` is "16.5.0" only
-  //  - you've added new methods since 16.5.1
-  //  - you're going to remove some of the methods in 16.5.2
+  //  - your build is toward 16.6.2 release and the `previousVersions` is "16.6.0" only
+  //  - you've added new methods since 16.6.1
+  //  - you're going to remove some of the methods in 16.6.2
   //  - in this case, the incompatibility won't be detected
-  // val previousVersions = Set(5).map(patch => s"16.5.$patch")
-  val previousVersions = Set.empty
+  val previousVersions = Set(0).map(patch => s"16.6.$patch")
+  //val previousVersions = Set.empty
 
   val mimaSettings = MimaPlugin.mimaDefaultSettings ++ Seq(
     mimaPreviousArtifacts := {
