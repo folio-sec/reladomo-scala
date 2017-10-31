@@ -55,10 +55,10 @@ case class NewAllTypes(id: Int, booleanValue: Boolean, byteValue: Byte, shortVal
       case Some(_nullableDoubleValue) => underlyingObj.setNullableDoubleValue(_nullableDoubleValue)
       case _ => underlyingObj.setNullableDoubleValueNull()
     }
-    underlyingObj.setNullableDateValue(nullableDateValue.orNull[java.util.Date])
-    underlyingObj.setNullableTimestampValue(nullableTimestampValue.orNull[java.sql.Timestamp])
-    underlyingObj.setNullableStringValue(nullableStringValue.orNull[String])
-    underlyingObj.setNullableByteArrayValue(nullableByteArrayValue.orNull[Array[Byte]])
+    underlyingObj.setNullableDateValue(nullableDateValue.map(_nullableDateValue => _nullableDateValue).orNull[Date])
+    underlyingObj.setNullableTimestampValue(nullableTimestampValue.map(_nullableTimestampValue => _nullableTimestampValue).orNull[Timestamp])
+    underlyingObj.setNullableStringValue(nullableStringValue.map(_nullableStringValue => _nullableStringValue).orNull[String])
+    underlyingObj.setNullableByteArrayValue(nullableByteArrayValue.map(_nullableByteArrayValue => _nullableByteArrayValue).orNull[byte[]])
     underlyingObj
   }
   def insert()(implicit tx: Transaction): AllTypes = {
@@ -118,10 +118,10 @@ case class AllTypes private (override val underlying: JavaAllTypes, booleanValue
       case Some(_nullableDoubleValue) => underlying.setNullableDoubleValue(_nullableDoubleValue)
       case _ => underlying.setNullableDoubleValueNull()
     }
-    underlying.setNullableDateValue(nullableDateValue.orNull[java.util.Date])
-    underlying.setNullableTimestampValue(nullableTimestampValue.orNull[java.sql.Timestamp])
-    underlying.setNullableStringValue(nullableStringValue.orNull[String])
-    underlying.setNullableByteArrayValue(nullableByteArrayValue.orNull[Array[Byte]])
+    underlying.setNullableDateValue(nullableDateValue.map(_nullableDateValue => _nullableDateValue).orNull[Date])
+    underlying.setNullableTimestampValue(nullableTimestampValue.map(_nullableTimestampValue => _nullableTimestampValue).orNull[Timestamp])
+    underlying.setNullableStringValue(nullableStringValue.map(_nullableStringValue => _nullableStringValue).orNull[String])
+    underlying.setNullableByteArrayValue(nullableByteArrayValue.map(_nullableByteArrayValue => _nullableByteArrayValue).orNull[byte[]])
     underlying
   }
   lazy val id: Int = underlying.getId

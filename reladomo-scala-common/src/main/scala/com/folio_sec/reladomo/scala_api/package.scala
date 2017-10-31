@@ -26,4 +26,6 @@ package object scala_api extends OperationImplicits with AggregateDataImplicits 
 
   type Timestamp = java.sql.Timestamp
 
+  type BigDecimal = java.math.BigDecimal
+
 }

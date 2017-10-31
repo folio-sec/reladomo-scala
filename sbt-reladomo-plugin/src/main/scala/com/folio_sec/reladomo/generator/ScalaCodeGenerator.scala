@@ -393,24 +393,30 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
           if (attribute.isNullable) {
             val optionCode = s"Option(${objectName}.${toGetterName(attribute.getJavaType, attribute.getName)})"
             val mapCode = attribute.getJavaType match {
-              case "String"    => ""
-              case "int"       => ".map(_.asInstanceOf[Int])"
-              case "long"      => ".map(_.asInstanceOf[Long])"
-              case "short"     => ".map(_.asInstanceOf[Short])"
-              case "double"    => ".map(_.asInstanceOf[Double])"
-              case "float"     => ".map(_.asInstanceOf[Float])"
-              case "Date"      => ".map(_.asInstanceOf[java.util.Date])"
-              case "Timestamp" => ".map(_.asInstanceOf[java.sql.Timestamp])"
-              case "byte"      => ".map(_.asInstanceOf[Byte])"
-              case "byte[]"    => ".map(_.asInstanceOf[Array[Byte]])"
-              case _           => ""
+              case "String"     => ""
+              case "int"        => ".map(_.asInstanceOf[Int])"
+              case "long"       => ".map(_.asInstanceOf[Long])"
+              case "short"      => ".map(_.asInstanceOf[Short])"
+              case "double"     => ".map(_.asInstanceOf[Double])"
+              case "float"      => ".map(_.asInstanceOf[Float])"
+              case "Date"       => ".map(_.asInstanceOf[java.util.Date])"
+              case "Timestamp"  => ".map(_.asInstanceOf[java.sql.Timestamp])"
+              case "byte"       => ".map(_.asInstanceOf[Byte])"
+              case "byte[]"     => ".map(_.asInstanceOf[Array[Byte]])"
+              case "BigDecimal" => ".map(scala.math.BigDecimal.apply)"
+              case _            => ""
             }
             s"if (${objectName}.${toIsNullMethodName(attribute.getName)}) None else ${optionCode + mapCode}"
           } else {
             s"${objectName}.${toGetterName(attribute.getJavaType, attribute.getName)}"
           }
         }
-        s"      ${attribute.getName} = ${getterCode}"
+        def toScalaAttributeCode(javaAttribute: String): String =
+          attribute.getJavaType match {
+            case "BigDecimal" => s"scala.math.BigDecimal(${javaAttribute})"
+            case _            => javaAttribute
+          }
+        s"      ${attribute.getName} = ${toScalaAttributeCode(getterCode)}"
       }
       .mkString(",\n")
   }
@@ -446,7 +452,7 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
           case "byte"       => "Byte"
           case "byte[]"     => "Array[Byte]"
           case "boolean"    => "Boolean"
-          case "BigDecimal" => "java.math.BigDecimal"
+          case "BigDecimal" => "scala.math.BigDecimal"
           case _            => "String"
         }
         if (attribute.isNullable) {
@@ -501,7 +507,7 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
       case ("byte", nullable)       => if (nullable) "Option[Byte]" else "Byte"
       case ("byte[]", nullable)     => if (nullable) "Option[Array[Byte]]" else "Array[Byte]"
       case ("boolean", nullable)    => if (nullable) "Option[Boolean]" else "Boolean"
-      case ("BigDecimal", nullable) => if (nullable) "Option[java.math.BigDecimal]" else "java.math.BigDecimal"
+      case ("BigDecimal", nullable) => if (nullable) "Option[scala.math.BigDecimal]" else "scala.math.BigDecimal"
       case (_, nullable)            => if (nullable) "Option[String]" else "String"
     }
   }
@@ -523,7 +529,7 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
       case "byte"                      => "Byte"
       case "byte[]"                    => "Array[Byte]"
       case "boolean"                   => "Boolean"
-      case "BigDecimal"                => "java.math.BigDecimal"
+      case "BigDecimal"                => "scala.math.BigDecimal"
       case SetTypeRegexp(genericType)  => s"Set[${genericType}]"
       case ListTypeRegexp(genericType) => s"Seq[${genericType}]"
       case _                           => "String"
@@ -650,20 +656,34 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
   }
 
   private def toSetterCalls(underlying: String, attributes: Seq[Attribute]): String = {
+    def toJavaAttributeCode(attributeName: String, attributeJavaType: String): String =
+      attributeJavaType match {
+        case "BigDecimal" => s"${attributeName}.bigDecimal"
+        case _            => attributeName
+      }
+
     attributes
       .map { attribute =>
         if (attribute.isNullable) {
           if (isNonNullJavaTypeName(attribute.getJavaType)) {
             s"""    ${attribute.getName} match {
-               |      case Some(_${attribute.getName}) => ${underlying}.${toSetterName(attribute.getName)}(_${attribute.getName})
+               |      case Some(_${attribute.getName}) => ${underlying}.${toSetterName(attribute.getName)}(${toJavaAttributeCode(
+                 s"_${attribute.getName}",
+                 attribute.getJavaType
+               )})
                |      case _ => ${underlying}.${toSetterName(attribute.getName)}Null()
                |    }""".stripMargin
           } else {
-            val scalaTypeName = toScalaType(attribute.getJavaType)
-            s"    ${underlying}.${toSetterName(attribute.getName)}(${attribute.getName}.orNull[${scalaTypeName}])"
+            s"    ${underlying}.${toSetterName(attribute.getName)}(${attribute.getName}.map(_${attribute.getName} => ${toJavaAttributeCode(
+              s"_${attribute.getName}",
+              attribute.getJavaType
+            )}).orNull[${attribute.getJavaType}])"
           }
         } else {
-          s"    ${underlying}.${toSetterName(attribute.getName)}(${attribute.getName})"
+          s"    ${underlying}.${toSetterName(attribute.getName)}(${toJavaAttributeCode(
+            attribute.getName,
+            attribute.getJavaType
+          )})"
         }
       }
       .mkString("\n")

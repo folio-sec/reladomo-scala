@@ -1,6 +1,6 @@
 package generator
 
-import com.folio_sec.reladomo.generator.DefaultScalaCodeGenerator
+import com.folio_sec.reladomo.generator.{ DefaultJavaCodeGenerator, DefaultScalaCodeGenerator }
 import org.scalatest._
 
 class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
@@ -50,7 +50,7 @@ class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
         |    val underlyingObj = new JavaCustomer()
         |    underlyingObj.setFirstName(firstName)
         |    underlyingObj.setLastName(lastName)
-        |    underlyingObj.setCountry(country.orNull[String])
+        |    underlyingObj.setCountry(country.map(_country => _country).orNull[String])
         |    zipCode match {
         |      case Some(_zipCode) => underlyingObj.setZipCode(_zipCode)
         |      case _ => underlyingObj.setZipCodeNull()
@@ -76,7 +76,7 @@ class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
         |  override lazy val savedUnderlying: JavaCustomer = {
         |    underlying.setFirstName(firstName)
         |    underlying.setLastName(lastName)
-        |    underlying.setCountry(country.orNull[String])
+        |    underlying.setCountry(country.map(_country => _country).orNull[String])
         |    zipCode match {
         |      case Some(_zipCode) => underlying.setZipCode(_zipCode)
         |      case _ => underlying.setZipCodeNull()
@@ -502,10 +502,11 @@ class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
         |import com.folio_sec.example.domain.issue009.{ObjectWithBigDecimalList => JavaObjectWithBigDecimalList}
         |import scala.collection.JavaConverters._
         |
-        |case class NewObjectWithBigDecimal(price: java.math.BigDecimal) extends NewTransactionalObject {
+        |case class NewObjectWithBigDecimal(price: scala.math.BigDecimal, nullablePrice: Option[scala.math.BigDecimal]) extends NewTransactionalObject {
         |  override lazy val underlying: JavaObjectWithBigDecimal = {
         |    val underlyingObj = new JavaObjectWithBigDecimal()
-        |    underlyingObj.setPrice(price)
+        |    underlyingObj.setPrice(price.bigDecimal)
+        |    underlyingObj.setNullablePrice(nullablePrice.map(_nullablePrice => _nullablePrice.bigDecimal).orNull[BigDecimal])
         |    underlyingObj
         |  }
         |  def insert()(implicit tx: Transaction): ObjectWithBigDecimal = {
@@ -523,9 +524,10 @@ class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
         |  def id(): Option[Int] = if (underlying.isInMemoryAndNotInserted) None else Some(underlying.getId)
         |}
         |
-        |case class ObjectWithBigDecimal private (override val underlying: JavaObjectWithBigDecimal, price: java.math.BigDecimal) extends TransactionalObject {
+        |case class ObjectWithBigDecimal private (override val underlying: JavaObjectWithBigDecimal, price: scala.math.BigDecimal, nullablePrice: Option[scala.math.BigDecimal]) extends TransactionalObject {
         |  override lazy val savedUnderlying: JavaObjectWithBigDecimal = {
-        |    underlying.setPrice(price)
+        |    underlying.setPrice(price.bigDecimal)
+        |    underlying.setNullablePrice(nullablePrice.map(_nullablePrice => _nullablePrice.bigDecimal).orNull[BigDecimal])
         |    underlying
         |  }
         |  lazy val id: Int = underlying.getId
@@ -535,7 +537,8 @@ class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
         |  def apply(underlying: JavaObjectWithBigDecimal): ObjectWithBigDecimal = {
         |    new ObjectWithBigDecimal(
         |      underlying = underlying,
-        |      price = underlying.getPrice
+        |      price = scala.math.BigDecimal(underlying.getPrice),
+        |      nullablePrice = scala.math.BigDecimal(if (underlying.isNullablePriceNull) None else Option(underlying.getNullablePrice).map(scala.math.BigDecimal.apply))
         |    )
         |  }
         |}
