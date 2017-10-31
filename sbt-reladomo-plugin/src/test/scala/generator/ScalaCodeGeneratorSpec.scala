@@ -538,7 +538,7 @@ class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
         |    new ObjectWithBigDecimal(
         |      underlying = underlying,
         |      price = scala.math.BigDecimal(underlying.getPrice),
-        |      nullablePrice = scala.math.BigDecimal(if (underlying.isNullablePriceNull) None else Option(underlying.getNullablePrice).map(scala.math.BigDecimal.apply))
+        |      nullablePrice = if (underlying.isNullablePriceNull) None else Option(underlying.getNullablePrice).map(scala.math.BigDecimal.apply)
         |    )
         |  }
         |}

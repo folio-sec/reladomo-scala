@@ -387,11 +387,18 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
   }
 
   private def toScalaConstructorCode(attributes: Seq[Attribute], objectName: String = "underlying"): String = {
+    def toScalaAttributeCode(javaAttributeName: String, javaAttributeType: String): String =
+      javaAttributeType match {
+        case "BigDecimal" => s"scala.math.BigDecimal(${javaAttributeName})"
+        case _            => javaAttributeName
+      }
+
     attributes
       .map { attribute =>
         val getterCode = {
           if (attribute.isNullable) {
-            val optionCode = s"Option(${objectName}.${toGetterName(attribute.getJavaType, attribute.getName)})"
+            val optionCode =
+              s"Option(${objectName}.${toGetterName(attribute.getJavaType, attribute.getName)})"
             val mapCode = attribute.getJavaType match {
               case "String"     => ""
               case "int"        => ".map(_.asInstanceOf[Int])"
@@ -408,15 +415,13 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
             }
             s"if (${objectName}.${toIsNullMethodName(attribute.getName)}) None else ${optionCode + mapCode}"
           } else {
-            s"${objectName}.${toGetterName(attribute.getJavaType, attribute.getName)}"
+            toScalaAttributeCode(
+              s"${objectName}.${toGetterName(attribute.getJavaType, attribute.getName)}",
+              attribute.getJavaType
+            )
           }
         }
-        def toScalaAttributeCode(javaAttribute: String): String =
-          attribute.getJavaType match {
-            case "BigDecimal" => s"scala.math.BigDecimal(${javaAttribute})"
-            case _            => javaAttribute
-          }
-        s"      ${attribute.getName} = ${toScalaAttributeCode(getterCode)}"
+        s"      ${attribute.getName} = ${getterCode}"
       }
       .mkString(",\n")
   }
