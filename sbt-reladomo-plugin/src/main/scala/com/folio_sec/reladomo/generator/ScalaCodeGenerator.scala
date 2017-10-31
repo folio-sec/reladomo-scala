@@ -434,19 +434,20 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
     attributes
       .map { attribute =>
         val typeName = attribute.getJavaType match {
-          case "String"    => "String"
-          case "char"      => "Char"
-          case "int"       => "Int"
-          case "long"      => "Long"
-          case "short"     => "Short"
-          case "double"    => "Double"
-          case "float"     => "Float"
-          case "Date"      => "java.util.Date"
-          case "Timestamp" => "java.sql.Timestamp"
-          case "byte"      => "Byte"
-          case "byte[]"    => "Array[Byte]"
-          case "boolean"   => "Boolean"
-          case _           => "String"
+          case "String"     => "String"
+          case "char"       => "Char"
+          case "int"        => "Int"
+          case "long"       => "Long"
+          case "short"      => "Short"
+          case "double"     => "Double"
+          case "float"      => "Float"
+          case "Date"       => "java.util.Date"
+          case "Timestamp"  => "java.sql.Timestamp"
+          case "byte"       => "Byte"
+          case "byte[]"     => "Array[Byte]"
+          case "boolean"    => "Boolean"
+          case "BigDecimal" => "java.math.BigDecimal"
+          case _            => "String"
         }
         if (attribute.isNullable) {
           if (isNonNullJavaTypeName(attribute.getJavaType)) {
@@ -488,19 +489,20 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
 
   private def toScalaType(attribute: Attribute): String = {
     (attribute.getJavaType, attribute.isNullable) match {
-      case ("String", nullable)    => if (nullable) "Option[String]" else "String"
-      case ("char", nullable)      => if (nullable) "Option[Char]" else "Char"
-      case ("int", nullable)       => if (nullable) "Option[Int]" else "Int"
-      case ("long", nullable)      => if (nullable) "Option[Long]" else "Long"
-      case ("short", nullable)     => if (nullable) "Option[Short]" else "Short"
-      case ("double", nullable)    => if (nullable) "Option[Double]" else "Double"
-      case ("float", nullable)     => if (nullable) "Option[Float]" else "Float"
-      case ("Date", nullable)      => if (nullable) "Option[java.util.Date]" else "java.util.Date"
-      case ("Timestamp", nullable) => if (nullable) "Option[java.sql.Timestamp]" else "java.sql.Timestamp"
-      case ("byte", nullable)      => if (nullable) "Option[Byte]" else "Byte"
-      case ("byte[]", nullable)    => if (nullable) "Option[Array[Byte]]" else "Array[Byte]"
-      case ("boolean", nullable)   => if (nullable) "Option[Boolean]" else "Boolean"
-      case (_, nullable)           => if (nullable) "Option[String]" else "String"
+      case ("String", nullable)     => if (nullable) "Option[String]" else "String"
+      case ("char", nullable)       => if (nullable) "Option[Char]" else "Char"
+      case ("int", nullable)        => if (nullable) "Option[Int]" else "Int"
+      case ("long", nullable)       => if (nullable) "Option[Long]" else "Long"
+      case ("short", nullable)      => if (nullable) "Option[Short]" else "Short"
+      case ("double", nullable)     => if (nullable) "Option[Double]" else "Double"
+      case ("float", nullable)      => if (nullable) "Option[Float]" else "Float"
+      case ("Date", nullable)       => if (nullable) "Option[java.util.Date]" else "java.util.Date"
+      case ("Timestamp", nullable)  => if (nullable) "Option[java.sql.Timestamp]" else "java.sql.Timestamp"
+      case ("byte", nullable)       => if (nullable) "Option[Byte]" else "Byte"
+      case ("byte[]", nullable)     => if (nullable) "Option[Array[Byte]]" else "Array[Byte]"
+      case ("boolean", nullable)    => if (nullable) "Option[Boolean]" else "Boolean"
+      case ("BigDecimal", nullable) => if (nullable) "Option[java.math.BigDecimal]" else "java.math.BigDecimal"
+      case (_, nullable)            => if (nullable) "Option[String]" else "String"
     }
   }
 
@@ -521,6 +523,7 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
       case "byte"                      => "Byte"
       case "byte[]"                    => "Array[Byte]"
       case "boolean"                   => "Boolean"
+      case "BigDecimal"                => "java.math.BigDecimal"
       case SetTypeRegexp(genericType)  => s"Set[${genericType}]"
       case ListTypeRegexp(genericType) => s"Seq[${genericType}]"
       case _                           => "String"
