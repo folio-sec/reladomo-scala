@@ -479,7 +479,10 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
                |    ${obj.getClassName}List(
                |      underlying = underlying,
                |      newValueAppliers = newValueAppliers :+ { () =>
-               |        underlying.${toSetterName(attribute.getName)}(${attribute.getName}.orNull[${attribute.getJavaType}])
+               |        underlying.${toSetterName(attribute.getName)}(${attribute.getName}.map(_${attribute.getName} => ${toJavaAttributeCode(
+                 s"_${attribute.getName}",
+                 attribute.getJavaType
+               )}).orNull[${attribute.getJavaType}])
                |      }
                |    )
                |  }
@@ -661,12 +664,6 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
   }
 
   private def toSetterCalls(underlying: String, attributes: Seq[Attribute]): String = {
-    def toJavaAttributeCode(attributeName: String, attributeJavaType: String): String =
-      attributeJavaType match {
-        case "BigDecimal" => s"${attributeName}.bigDecimal"
-        case _            => attributeName
-      }
-
     attributes
       .map { attribute =>
         if (attribute.isNullable) {
@@ -693,5 +690,11 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
       }
       .mkString("\n")
   }
+
+  private def toJavaAttributeCode(attributeName: String, attributeJavaType: String): String =
+    attributeJavaType match {
+      case "BigDecimal" => s"${attributeName}.bigDecimal"
+      case _            => attributeName
+    }
 
 }

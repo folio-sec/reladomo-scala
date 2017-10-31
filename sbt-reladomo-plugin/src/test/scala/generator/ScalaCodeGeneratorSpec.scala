@@ -152,7 +152,7 @@ class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
         |    CustomerList(
         |      underlying = underlying,
         |      newValueAppliers = newValueAppliers :+ { () =>
-        |        underlying.setCountry(country.orNull[String])
+        |        underlying.setCountry(country.map(_country => _country).orNull[String])
         |      }
         |    )
         |  }
