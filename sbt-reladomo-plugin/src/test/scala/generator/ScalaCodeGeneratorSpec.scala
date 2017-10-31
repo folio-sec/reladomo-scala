@@ -1,6 +1,6 @@
 package generator
 
-import com.folio_sec.reladomo.generator.{ DefaultJavaCodeGenerator, DefaultScalaCodeGenerator }
+import com.folio_sec.reladomo.generator.DefaultScalaCodeGenerator
 import org.scalatest._
 
 class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
@@ -502,10 +502,10 @@ class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
         |import com.folio_sec.example.domain.issue009.{ObjectWithBigDecimalList => JavaObjectWithBigDecimalList}
         |import scala.collection.JavaConverters._
         |
-        |case class NewObjectWithBigDecimal(price: BigDecimal) extends NewTransactionalObject {
+        |case class NewObjectWithBigDecimal(price: java.math.BigDecimal) extends NewTransactionalObject {
         |  override lazy val underlying: JavaObjectWithBigDecimal = {
         |    val underlyingObj = new JavaObjectWithBigDecimal()
-        |    underlyingObj.setPrice(price.bigDecimal)
+        |    underlyingObj.setPrice(price)
         |    underlyingObj
         |  }
         |  def insert()(implicit tx: Transaction): ObjectWithBigDecimal = {
@@ -523,7 +523,7 @@ class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
         |  def id(): Option[Int] = if (underlying.isInMemoryAndNotInserted) None else Some(underlying.getId)
         |}
         |
-        |case class ObjectWithBigDecimal private (override val underlying: JavaObjectWithBigDecimal, price: String) extends TransactionalObject {
+        |case class ObjectWithBigDecimal private (override val underlying: JavaObjectWithBigDecimal, price: java.math.BigDecimal) extends TransactionalObject {
         |  override lazy val savedUnderlying: JavaObjectWithBigDecimal = {
         |    underlying.setPrice(price)
         |    underlying
@@ -535,7 +535,7 @@ class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
         |  def apply(underlying: JavaObjectWithBigDecimal): ObjectWithBigDecimal = {
         |    new ObjectWithBigDecimal(
         |      underlying = underlying,
-        |      price = BigDecimal(underlying.getPrice)
+        |      price = underlying.getPrice
         |    )
         |  }
         |}
