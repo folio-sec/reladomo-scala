@@ -479,7 +479,7 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
                |    ${obj.getClassName}List(
                |      underlying = underlying,
                |      newValueAppliers = newValueAppliers :+ { () =>
-               |        underlying.${toSetterName(attribute.getName)}(${attribute.getName}.orNull[${typeName}])
+               |        underlying.${toSetterName(attribute.getName)}(${attribute.getName}.orNull[${attribute.getJavaType}])
                |      }
                |    )
                |  }
