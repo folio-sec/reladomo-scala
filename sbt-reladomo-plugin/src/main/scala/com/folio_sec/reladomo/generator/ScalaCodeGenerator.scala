@@ -497,26 +497,27 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
       .mkString("")
   }
 
-  private def toScalaType(attribute: Attribute, allowNull: Boolean = false): String = {
-    (attribute.getJavaType, allowNull == false && attribute.isNullable) match {
-      case ("String", nullable)     => if (nullable) "Option[String]" else "String"
-      case ("char", nullable)       => if (nullable) "Option[Char]" else "Char"
-      case ("int", nullable)        => if (nullable) "Option[Int]" else "Int"
-      case ("long", nullable)       => if (nullable) "Option[Long]" else "Long"
-      case ("short", nullable)      => if (nullable) "Option[Short]" else "Short"
-      case ("double", nullable)     => if (nullable) "Option[Double]" else "Double"
-      case ("float", nullable)      => if (nullable) "Option[Float]" else "Float"
-      case ("Date", nullable)       => if (nullable) "Option[java.util.Date]" else "java.util.Date"
-      case ("Timestamp", nullable)  => if (nullable) "Option[java.sql.Timestamp]" else "java.sql.Timestamp"
-      case ("byte", nullable)       => if (nullable) "Option[Byte]" else "Byte"
-      case ("byte[]", nullable)     => if (nullable) "Option[Array[Byte]]" else "Array[Byte]"
-      case ("boolean", nullable)    => if (nullable) "Option[Boolean]" else "Boolean"
-      case ("BigDecimal", nullable) => if (nullable) "Option[scala.math.BigDecimal]" else "scala.math.BigDecimal"
-      case (_, nullable)            => if (nullable) "Option[String]" else "String"
+  private def toScalaType(attribute: Attribute, javaCompatible: Boolean = false): String = {
+    (attribute.getJavaType, javaCompatible == false && attribute.isNullable) match {
+      case ("String", nullable)                => if (nullable) "Option[String]" else "String"
+      case ("char", nullable)                  => if (nullable) "Option[Char]" else "Char"
+      case ("int", nullable)                   => if (nullable) "Option[Int]" else "Int"
+      case ("long", nullable)                  => if (nullable) "Option[Long]" else "Long"
+      case ("short", nullable)                 => if (nullable) "Option[Short]" else "Short"
+      case ("double", nullable)                => if (nullable) "Option[Double]" else "Double"
+      case ("float", nullable)                 => if (nullable) "Option[Float]" else "Float"
+      case ("Date", nullable)                  => if (nullable) "Option[java.util.Date]" else "java.util.Date"
+      case ("Timestamp", nullable)             => if (nullable) "Option[java.sql.Timestamp]" else "java.sql.Timestamp"
+      case ("byte", nullable)                  => if (nullable) "Option[Byte]" else "Byte"
+      case ("byte[]", nullable)                => if (nullable) "Option[Array[Byte]]" else "Array[Byte]"
+      case ("boolean", nullable)               => if (nullable) "Option[Boolean]" else "Boolean"
+      case ("BigDecimal", _) if javaCompatible => "java.math.BigDecimal"
+      case ("BigDecimal", nullable)            => if (nullable) "Option[scala.math.BigDecimal]" else "scala.math.BigDecimal"
+      case (_, nullable)                       => if (nullable) "Option[String]" else "String"
     }
   }
   private def toJavaCompatibleScalaType(attribute: Attribute): String = {
-    toScalaType(attribute = attribute, allowNull = true)
+    toScalaType(attribute = attribute, javaCompatible = true)
   }
 
   private[this] val SetTypeRegexp  = "^Set<(.+)>$".r
