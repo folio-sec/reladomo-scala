@@ -16,7 +16,7 @@ case class NewCustomer(firstName: String, lastName: String, country: Option[Stri
     val underlyingObj = new JavaCustomer()
     underlyingObj.setFirstName(firstName)
     underlyingObj.setLastName(lastName)
-    underlyingObj.setCountry(country.map(_country => _country).orNull[String])
+    underlyingObj.setCountry(country.orNull[String])
     zipCode match {
       case Some(_zipCode) => underlyingObj.setZipCode(_zipCode)
       case _ => underlyingObj.setZipCodeNull()
@@ -42,7 +42,7 @@ case class Customer private (override val underlying: JavaCustomer, firstName: S
   override lazy val savedUnderlying: JavaCustomer = {
     underlying.setFirstName(firstName)
     underlying.setLastName(lastName)
-    underlying.setCountry(country.map(_country => _country).orNull[String])
+    underlying.setCountry(country.orNull[String])
     zipCode match {
       case Some(_zipCode) => underlying.setZipCode(_zipCode)
       case _ => underlying.setZipCodeNull()

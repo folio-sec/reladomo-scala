@@ -387,12 +387,6 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
   }
 
   private def toScalaConstructorCode(attributes: Seq[Attribute], objectName: String = "underlying"): String = {
-    def toScalaAttributeCode(javaAttributeName: String, javaAttributeType: String): String =
-      javaAttributeType match {
-        case "BigDecimal" => s"scala.math.BigDecimal(${javaAttributeName})"
-        case _            => javaAttributeName
-      }
-
     attributes
       .map { attribute =>
         val getterCode = {
@@ -415,10 +409,11 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
             }
             s"if (${objectName}.${toIsNullMethodName(attribute.getName)}) None else ${optionCode + mapCode}"
           } else {
-            toScalaAttributeCode(
-              s"${objectName}.${toGetterName(attribute.getJavaType, attribute.getName)}",
-              attribute.getJavaType
-            )
+            val getterCall = s"${objectName}.${toGetterName(attribute.getJavaType, attribute.getName)}"
+            attribute.getJavaType match {
+              case "BigDecimal" => s"scala.math.BigDecimal(${getterCall})"
+              case _            => getterCall
+            }
           }
         }
         s"      ${attribute.getName} = ${getterCode}"
@@ -479,10 +474,9 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
                |    ${obj.getClassName}List(
                |      underlying = underlying,
                |      newValueAppliers = newValueAppliers :+ { () =>
-               |        underlying.${toSetterName(attribute.getName)}(${attribute.getName}.map(_${attribute.getName} => ${toJavaAttributeCode(
-                 s"_${attribute.getName}",
+               |        underlying.${toSetterName(attribute.getName)}(${attribute.getName}${appendOptionConverterIfNeeded(
                  attribute.getJavaType
-               )}).orNull[${attribute.getJavaType}])
+               )}.orNull[${toJavaCompatibleScalaType(attribute)}])
                |      }
                |    )
                |  }
@@ -492,8 +486,7 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
           s"""  def ${toWithMethodName(attribute.getName)}(${attribute.getName}: ${typeName}) = {
              |    ${obj.getClassName}List(
              |      underlying = underlying,
-             |      newValueAppliers = newValueAppliers :+ { () => underlying.${toSetterName(attribute.getName)}(${toJavaAttributeCode(
-               attribute.getName,
+             |      newValueAppliers = newValueAppliers :+ { () => underlying.${toSetterName(attribute.getName)}(${attribute.getName}${toJavaValueIfNeeded(
                attribute.getJavaType
              )}) }
              |    )
@@ -504,8 +497,8 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
       .mkString("")
   }
 
-  private def toScalaType(attribute: Attribute): String = {
-    (attribute.getJavaType, attribute.isNullable) match {
+  private def toScalaType(attribute: Attribute, allowNull: Boolean = false): String = {
+    (attribute.getJavaType, allowNull == false && attribute.isNullable) match {
       case ("String", nullable)     => if (nullable) "Option[String]" else "String"
       case ("char", nullable)       => if (nullable) "Option[Char]" else "Char"
       case ("int", nullable)        => if (nullable) "Option[Int]" else "Int"
@@ -521,6 +514,9 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
       case ("BigDecimal", nullable) => if (nullable) "Option[scala.math.BigDecimal]" else "scala.math.BigDecimal"
       case (_, nullable)            => if (nullable) "Option[String]" else "String"
     }
+  }
+  private def toJavaCompatibleScalaType(attribute: Attribute): String = {
+    toScalaType(attribute = attribute, allowNull = true)
   }
 
   private[this] val SetTypeRegexp  = "^Set<(.+)>$".r
@@ -672,32 +668,33 @@ abstract class ScalaCodeGenerator(mithraObjectXmlPath: String,
         if (attribute.isNullable) {
           if (isNonNullJavaTypeName(attribute.getJavaType)) {
             s"""    ${attribute.getName} match {
-               |      case Some(_${attribute.getName}) => ${underlying}.${toSetterName(attribute.getName)}(${toJavaAttributeCode(
-                 s"_${attribute.getName}",
+               |      case Some(_${attribute.getName}) => ${underlying}.${toSetterName(attribute.getName)}(_${attribute.getName}${toJavaValueIfNeeded(
                  attribute.getJavaType
                )})
                |      case _ => ${underlying}.${toSetterName(attribute.getName)}Null()
                |    }""".stripMargin
           } else {
-            s"    ${underlying}.${toSetterName(attribute.getName)}(${attribute.getName}.map(_${attribute.getName} => ${toJavaAttributeCode(
-              s"_${attribute.getName}",
-              attribute.getJavaType
-            )}).orNull[${attribute.getJavaType}])"
+            s"    ${underlying}.${toSetterName(attribute.getName)}(${attribute.getName}${appendOptionConverterIfNeeded(attribute.getJavaType)}.orNull[${toJavaCompatibleScalaType(attribute)}])"
           }
         } else {
-          s"    ${underlying}.${toSetterName(attribute.getName)}(${toJavaAttributeCode(
-            attribute.getName,
-            attribute.getJavaType
-          )})"
+          s"    ${underlying}.${toSetterName(attribute.getName)}(${attribute.getName}${toJavaValueIfNeeded(attribute.getJavaType)})"
         }
       }
       .mkString("\n")
   }
 
-  private def toJavaAttributeCode(attributeName: String, attributeJavaType: String): String =
-    attributeJavaType match {
-      case "BigDecimal" => s"${attributeName}.bigDecimal"
-      case _            => attributeName
+  private def appendOptionConverterIfNeeded(javaType: String): String = {
+    toJavaValueIfNeeded(javaType) match {
+      case ""         => ""
+      case methodCall => s".map(_${methodCall})"
     }
+  }
+
+  private def toJavaValueIfNeeded(javaType: String): String = {
+    javaType match {
+      case "BigDecimal" => ".bigDecimal"
+      case _            => ""
+    }
+  }
 
 }
