@@ -174,7 +174,7 @@ case class AllTypesList(underlying: JavaAllTypesList,
     AllTypesList(
       underlying = underlying,
       newValueAppliers = newValueAppliers :+ { () =>
-        underlying.setNullableDateValue(nullableDateValue.map(_nullableDateValue => _nullableDateValue).orNull[Date])
+        underlying.setNullableDateValue(nullableDateValue.orNull[java.util.Date])
       }
     )
   }
@@ -182,7 +182,7 @@ case class AllTypesList(underlying: JavaAllTypesList,
     AllTypesList(
       underlying = underlying,
       newValueAppliers = newValueAppliers :+ { () =>
-        underlying.setNullableTimestampValue(nullableTimestampValue.map(_nullableTimestampValue => _nullableTimestampValue).orNull[Timestamp])
+        underlying.setNullableTimestampValue(nullableTimestampValue.orNull[java.sql.Timestamp])
       }
     )
   }
@@ -190,7 +190,7 @@ case class AllTypesList(underlying: JavaAllTypesList,
     AllTypesList(
       underlying = underlying,
       newValueAppliers = newValueAppliers :+ { () =>
-        underlying.setNullableStringValue(nullableStringValue.map(_nullableStringValue => _nullableStringValue).orNull[String])
+        underlying.setNullableStringValue(nullableStringValue.orNull[String])
       }
     )
   }
@@ -198,7 +198,7 @@ case class AllTypesList(underlying: JavaAllTypesList,
     AllTypesList(
       underlying = underlying,
       newValueAppliers = newValueAppliers :+ { () =>
-        underlying.setNullableByteArrayValue(nullableByteArrayValue.map(_nullableByteArrayValue => _nullableByteArrayValue).orNull[byte[]])
+        underlying.setNullableByteArrayValue(nullableByteArrayValue.orNull[Array[Byte]])
       }
     )
   }
