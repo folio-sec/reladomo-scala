@@ -478,4 +478,72 @@ class ScalaCodeGeneratorSpec extends FlatSpec with Matchers {
 
     sourceCode should equal(expectedSourceCode)
   }
+
+  it should "fix issue #9 ; Support BigDecimal as javaType" in {
+    val generator = new DefaultScalaCodeGenerator(
+      mithraObjectXmlPath = "src/test/resources/reladomo/issue009/ObjectWithBigDecimal.xml",
+      scalaApiPackageSuffix = "scala_api",
+      scalaApiModifiableFilesOutputDir = "src/test/resources/generated/",
+      scalaApiUnmodifiableFilesOutputDir = "src/test/resources/src_unmanaged/",
+      futureApi = "twitter"
+    )
+    val sourceCode = generator.generateTxObject(generator.loadMithraObject())
+    val expectedSourceCode =
+      """/*
+        | * This file was automatically generated using folio-sec/sbt-reladomo-plugin. Please do not modify it.
+        | */
+        |package com.folio_sec.example.domain.issue009.scala_api
+        |
+        |import com.folio_sec.reladomo.scala_api._
+        |import com.folio_sec.reladomo.scala_api.util.TimestampUtil
+        |import com.folio_sec.reladomo.scala_api.exception.ReladomoException
+        |import com.gs.fw.common.mithra.MithraBusinessException
+        |import com.folio_sec.example.domain.issue009.{ObjectWithBigDecimal => JavaObjectWithBigDecimal}
+        |import com.folio_sec.example.domain.issue009.{ObjectWithBigDecimalList => JavaObjectWithBigDecimalList}
+        |import scala.collection.JavaConverters._
+        |
+        |case class NewObjectWithBigDecimal(price: scala.math.BigDecimal, nullablePrice: Option[scala.math.BigDecimal]) extends NewTransactionalObject {
+        |  override lazy val underlying: JavaObjectWithBigDecimal = {
+        |    val underlyingObj = new JavaObjectWithBigDecimal()
+        |    underlyingObj.setPrice(price.bigDecimal)
+        |    underlyingObj.setNullablePrice(nullablePrice.map(_.bigDecimal).orNull[java.math.BigDecimal])
+        |    underlyingObj
+        |  }
+        |  def insert()(implicit tx: Transaction): ObjectWithBigDecimal = {
+        |    underlying.insert()
+        |    ObjectWithBigDecimal(underlying)
+        |  }
+        |  def insertForRecovery()(implicit tx: Transaction): ObjectWithBigDecimal = {
+        |    underlying.insertForRecovery()
+        |    ObjectWithBigDecimal(underlying)
+        |  }
+        |  def cascadeInsert()(implicit tx: Transaction): ObjectWithBigDecimal = {
+        |    underlying.cascadeInsert()
+        |    ObjectWithBigDecimal(underlying)
+        |  }
+        |  def id(): Option[Int] = if (underlying.isInMemoryAndNotInserted) None else Some(underlying.getId)
+        |}
+        |
+        |case class ObjectWithBigDecimal private (override val underlying: JavaObjectWithBigDecimal, price: scala.math.BigDecimal, nullablePrice: Option[scala.math.BigDecimal]) extends TransactionalObject {
+        |  override lazy val savedUnderlying: JavaObjectWithBigDecimal = {
+        |    underlying.setPrice(price.bigDecimal)
+        |    underlying.setNullablePrice(nullablePrice.map(_.bigDecimal).orNull[java.math.BigDecimal])
+        |    underlying
+        |  }
+        |  lazy val id: Int = underlying.getId
+        |
+        |}
+        |object ObjectWithBigDecimal {
+        |  def apply(underlying: JavaObjectWithBigDecimal): ObjectWithBigDecimal = {
+        |    new ObjectWithBigDecimal(
+        |      underlying = underlying,
+        |      price = scala.math.BigDecimal(underlying.getPrice),
+        |      nullablePrice = if (underlying.isNullablePriceNull) None else Option(underlying.getNullablePrice).map(scala.math.BigDecimal.apply)
+        |    )
+        |  }
+        |}
+        |""".stripMargin
+
+    sourceCode should equal(expectedSourceCode)
+  }
 }

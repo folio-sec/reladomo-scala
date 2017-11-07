@@ -1,0 +1,12 @@
+<MithraObject objectType="transactional"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="mithraobject.xsd">
+
+    <PackageName>com.folio_sec.example.domain.issue009</PackageName>
+    <ClassName>ObjectWithBigDecimal</ClassName>
+    <DefaultTable>object_with_bigdecimal</DefaultTable>
+
+    <Attribute name="id" javaType="int" columnName="id" primaryKey="true"  primaryKeyGeneratorStrategy="Max"/>
+    <Attribute name="price" javaType="BigDecimal" columnName="price" nullable="false" precision="12" scale="2"/>
+    <Attribute name="nullablePrice" javaType="BigDecimal" columnName="nullablePrice" nullable="true" precision="12" scale="2"/>
+</MithraObject>
