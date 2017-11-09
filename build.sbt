@@ -20,7 +20,7 @@ lazy val reladomoScalaCommon = (project in file("reladomo-scala-common"))
   .settings(
     name := "reladomo-scala-common",
     scalaVersion := latestScalaVersion,
-    crossScalaVersions := Seq(latestScalaVersion, "2.11.11"),
+    crossScalaVersions := Seq(latestScalaVersion, "2.11.12"),
     sbtPlugin := false,
     libraryDependencies ++= Seq(
       reladomo,
@@ -42,7 +42,7 @@ lazy val reladomoScalaTwitterCommon = (project in file("reladomo-scala-twitter-c
   .settings(
     normalizedName := s"reladomo-scala-twitter-${twitterUtilBinVersion}-common",
     scalaVersion := latestScalaVersion,
-    crossScalaVersions := Seq(latestScalaVersion, "2.11.11"),
+    crossScalaVersions := Seq(latestScalaVersion, "2.11.12"),
     sbtPlugin := false,
     libraryDependencies ++= Seq(
       twitterUtilCore,
@@ -60,7 +60,7 @@ lazy val sbtReladomoPlugin = (project in file("sbt-reladomo-plugin"))
   .settings(ScriptedPlugin.scriptedSettings)
   .settings(
     name := "sbt-reladomo-plugin",
-    crossSbtVersions := Vector("0.13.16", "1.0.1"),
+    crossSbtVersions := Vector("0.13.16", "1.0.3"),
     sbtPlugin := true,
     libraryDependencies ++= Seq(
       ant,
