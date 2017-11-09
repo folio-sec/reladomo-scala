@@ -1,4 +1,4 @@
 import Dependencies.reladomoBinVersion
 
 //scripted-plugin requires SNAPSHOT version since it publishes to local ivy in every test runs
-version in ThisBuild := s"${reladomoBinVersion}.1"
+version in ThisBuild := s"${reladomoBinVersion}.2-SNAPSHOT"
