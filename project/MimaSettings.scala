@@ -10,7 +10,7 @@ object MimaSettings {
   //  - you've added new methods since 16.6.1
   //  - you're going to remove some of the methods in 16.6.2
   //  - in this case, the incompatibility won't be detected
-  val previousVersions = Set(0).map(patch => s"16.6.$patch")
+  val previousVersions = Set(0, 1).map(patch => s"16.6.$patch")
   //val previousVersions = Set.empty
 
   val mimaSettings = MimaPlugin.mimaDefaultSettings ++ Seq(
