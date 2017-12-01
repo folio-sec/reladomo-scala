@@ -6,7 +6,7 @@ lazy val theOrganization = "com.folio-sec"
 lazy val baseSettings = Seq(
   organization := theOrganization,
   scalacOptions ++= theScalaOptions,
-  incOptions := sbt.inc.IncOptions.Default,
+  incOptions := xsbti.compile.IncOptions.of(),
   transitiveClassifiers in Global := Seq(Artifact.SourceClassifier),
   pomIncludeRepository := (_ => false),
   scalafmtOnCompile := true,
@@ -16,6 +16,7 @@ lazy val baseSettings = Seq(
 )
 
 lazy val reladomoScalaCommon = (project in file("reladomo-scala-common"))
+  .disablePlugins(ScriptedPlugin)
   .settings(baseSettings)
   .settings(
     name := "reladomo-scala-common",
@@ -38,6 +39,7 @@ lazy val reladomoScalaCommon = (project in file("reladomo-scala-common"))
   .settings(MimaSettings.mimaSettings)
 
 lazy val reladomoScalaTwitterCommon = (project in file("reladomo-scala-twitter-common"))
+  .disablePlugins(ScriptedPlugin)
   .settings(baseSettings)
   .settings(
     normalizedName := s"reladomo-scala-twitter-${twitterUtilBinVersion}-common",
@@ -57,7 +59,6 @@ lazy val reladomoScalaTwitterCommon = (project in file("reladomo-scala-twitter-c
 
 lazy val sbtReladomoPlugin = (project in file("sbt-reladomo-plugin"))
   .settings(baseSettings)
-  .settings(ScriptedPlugin.scriptedSettings)
   .settings(
     name := "sbt-reladomo-plugin",
     crossSbtVersions := Vector("0.13.16", "1.0.3"),

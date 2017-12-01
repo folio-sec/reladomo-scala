@@ -14,7 +14,7 @@ if [[ ${TRAVIS_SCALA_VERSION} = "scripted-test" ]]; then
   && sbt clean \
       "project sbtReladomoPlugin" \
       "test" \
-      "scripted" \
+      "^scripted" \
       "^publishLocal" \
   && cd sample && sbt clean test
 else
