@@ -14,7 +14,7 @@ object MimaSettings {
   //  - you're going to remove some of the methods in 16.6.2
   //  - in this case, the incompatibility won't be detected
   // val previousVersions = Set.empty
-  val previousVersions = if(firstReleaseTwitterUtilVersions.contain(Dependencies.twitterUtilVersion)) {
+  val previousVersions = if(firstReleaseTwitterUtilVersions.contains(Dependencies.twitterUtilVersion)) {
     // because first release for this twitter util version, no binary compatbile check
     Set.empty
   } else {
