@@ -10,8 +10,13 @@ object MimaSettings {
   //  - you've added new methods since 16.6.1
   //  - you're going to remove some of the methods in 16.6.2
   //  - in this case, the incompatibility won't be detected
-  val previousVersions = Set(0, 1).map(patch => s"16.6.$patch")
-  //val previousVersions = Set.empty
+  // val previousVersions = Set.empty
+  val previousVersions = if(sys.env.get("TWITTER_UTIL_VERSION") == "17.12.0") {
+    // because first release for this twitter util version, no binary compatbile check
+    Set.empty
+  } else {
+    Set(0, 1).map(patch => s"16.6.$patch")
+  }
 
   val mimaSettings = MimaPlugin.mimaDefaultSettings ++ Seq(
     mimaPreviousArtifacts := {
