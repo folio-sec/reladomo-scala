@@ -5,7 +5,7 @@ object Dependencies {
 
   lazy val latestScalaVersion = "2.12.4"
 
-  lazy val twitterUtilVersion    = sys.env.get("TWITTER_UTIL_VERSION").getOrElse("6.45.0")
+  lazy val twitterUtilVersion    = sys.env.get("TWITTER_UTIL_VERSION").getOrElse("17.12.0")
   lazy val twitterUtilBinVersion = toBinV(twitterUtilVersion)
   lazy val reladomoVersion     = "16.6.1"
   lazy val reladomoBinVersion = toBinV(reladomoVersion)
