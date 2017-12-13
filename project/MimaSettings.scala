@@ -4,6 +4,9 @@ import com.typesafe.tools.mima.plugin.MimaKeys.{mimaPreviousArtifacts, mimaRepor
 
 object MimaSettings {
 
+  // twitterUtilVersion which is not included in the previous reladomo-scala
+  val firstReleaseTwitterUtilVersions = Set("17.11.0", "17.12.0")
+
   // The `previousVersions` must be *ALL* the previous versions to be binary compatible (e.g. Set("16.6.0", "16.6.1") for "16.6.2-SNAPSHOT").
   // The following bad scenario is the reason we must obey the rule:
   //  - your build is toward 16.6.2 release and the `previousVersions` is "16.6.0" only
@@ -11,7 +14,7 @@ object MimaSettings {
   //  - you're going to remove some of the methods in 16.6.2
   //  - in this case, the incompatibility won't be detected
   // val previousVersions = Set.empty
-  val previousVersions = if(sys.env.get("TWITTER_UTIL_VERSION") == "17.12.0") {
+  val previousVersions = if(firstReleaseTwitterUtilVersions.contain(Dependencies.twitterUtilVersion)) {
     // because first release for this twitter util version, no binary compatbile check
     Set.empty
   } else {
