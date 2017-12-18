@@ -6,7 +6,7 @@ lazy val theOrganization     = "com.folio-sec"
 
 lazy val root = (project in file("."))
   .settings(
-    scalaVersion := "2.12.3",
+    scalaVersion := "2.12.4",
     reladomoScalaApiFutureType in Compile := "twitter",
     libraryDependencies ++= Seq(
       theOrganization             %% "reladomo-scala-common"                                 % System.getProperty("reladomoScalaCommonVersion"),
