@@ -1,5 +1,5 @@
 resolvers += "sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
-lazy val reladomoScalaV = sys.env.get("RELEASE_VERSION").getOrElse("16.6.2")
+lazy val reladomoScalaV = sys.env.get("RELEASE_VERSION").getOrElse("16.6.3-SNAPSHOT")
 addSbtPlugin("com.folio-sec" % "sbt-reladomo-plugin" % reladomoScalaV)
 
 addSbtPlugin("com.lucidchart"  % "sbt-scalafmt" % "1.14")
