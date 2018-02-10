@@ -28,7 +28,7 @@ import com.gs.fw.common.mithra.behavior.state.DatedPersistedState;
 import com.gs.fw.common.mithra.attribute.update.*;
 import com.gs.fw.common.mithra.util.StatisticCounter;
 /**
-* This file was automatically generated using Mithra 16.6.1. Please do not modify it.
+* This file was automatically generated using Mithra 16.7.0. Please do not modify it.
 * Add custom logic to its subclass instead.
 */
 // Generated from templates/datedtransactional/Abstract.jsp

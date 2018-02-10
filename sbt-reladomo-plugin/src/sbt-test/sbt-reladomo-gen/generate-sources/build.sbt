@@ -1,6 +1,6 @@
 import com.folio_sec.reladomo.generator.sbtplugin.ReladomoPlugin
 
-lazy val reladomoV           = "16.6.1"
+lazy val reladomoV           = "16.7.0"
 lazy val twitterUtilCoreBinV = "17.12"
 lazy val theOrganization     = "com.folio-sec"
 

@@ -23,7 +23,7 @@ import com.gs.fw.common.mithra.notification.listener.*;
 import com.gs.fw.common.mithra.list.cursor.Cursor;
 import com.gs.fw.common.mithra.bulkloader.*;
 /**
-* This file was automatically generated using Mithra 16.6.1. Please do not modify it.
+* This file was automatically generated using Mithra 16.7.0. Please do not modify it.
 * Add custom logic to its subclass instead.
 */
 // Generated from templates/transactional/ListAbstract.jsp

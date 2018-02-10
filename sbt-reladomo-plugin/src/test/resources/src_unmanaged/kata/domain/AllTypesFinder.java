@@ -36,7 +36,7 @@ import com.gs.fw.common.mithra.util.TimestampPool;
 import com.gs.collections.impl.map.mutable.UnifiedMap;
 import java.io.Serializable;
 /**
-* This file was automatically generated using Mithra 16.6.1. Please do not modify it.
+* This file was automatically generated using Mithra 16.7.0. Please do not modify it.
 * Add custom logic to its subclass instead.
 */
 public class AllTypesFinder
