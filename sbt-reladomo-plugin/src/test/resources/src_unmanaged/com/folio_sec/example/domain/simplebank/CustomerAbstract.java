@@ -24,7 +24,7 @@ import com.gs.fw.common.mithra.transaction.MithraObjectPersister;
 import java.util.Arrays;
 import java.util.HashSet;
 /**
-* This file was automatically generated using Mithra 16.6.1. Please do not modify it.
+* This file was automatically generated using Mithra 16.7.0. Please do not modify it.
 * Add custom logic to its subclass instead.
 */
 // Generated from templates/transactional/Abstract.jsp

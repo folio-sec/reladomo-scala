@@ -7,7 +7,7 @@ object Dependencies {
 
   lazy val twitterUtilVersion    = sys.env.get("TWITTER_UTIL_VERSION").getOrElse("17.12.0")
   lazy val twitterUtilBinVersion = toBinV(twitterUtilVersion)
-  lazy val reladomoVersion     = "16.6.1"
+  lazy val reladomoVersion     = "16.7.0"
   lazy val reladomoBinVersion = toBinV(reladomoVersion)
 
   lazy val reladomo        = "com.goldmansachs.reladomo" % "reladomo" % reladomoVersion % Compile excludeAll(
