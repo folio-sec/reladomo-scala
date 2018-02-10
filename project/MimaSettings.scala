@@ -5,7 +5,9 @@ import com.typesafe.tools.mima.plugin.MimaKeys.{mimaPreviousArtifacts, mimaRepor
 object MimaSettings {
 
   // twitterUtilVersion which is not included in the previous reladomo-scala
-  val firstReleaseTwitterUtilVersions = Set("17.11.0", "17.12.0")
+  // PLEASE Add your twitter-util version if you are releasing with updating twitter-util
+  // PLEASE REMOVE your twitter-util version if you are releasing without updating twitter-util
+  val firstReleaseTwitterUtilVersions = Set[String]()
 
   // The `previousVersions` must be *ALL* the previous versions to be binary compatible (e.g. Set("16.6.0", "16.6.1") for "16.6.2-SNAPSHOT").
   // The following bad scenario is the reason we must obey the rule:
@@ -18,7 +20,7 @@ object MimaSettings {
     // because first release for this twitter util version, no binary compatbile check
     Set.empty
   } else {
-    Set(0, 1, 2).map(patch => s"16.6.$patch")
+    Set(2).map(patch => s"16.6.$patch")
   }
 
   val mimaSettings = MimaPlugin.mimaDefaultSettings ++ Seq(
