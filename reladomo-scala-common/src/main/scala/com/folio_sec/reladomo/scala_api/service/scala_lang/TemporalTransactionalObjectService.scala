@@ -17,7 +17,7 @@
 package com.folio_sec.reladomo.scala_api.service.scala_lang
 
 import com.folio_sec.reladomo.scala_api._
-import com.gs.fw.common.mithra.{ MithraDatedTransactionalObject, MithraTransactionalObject }
+import com.gs.fw.common.mithra.MithraDatedTransactionalObject
 import com.gs.fw.finder.OrderBy
 
 import scala.concurrent.{ ExecutionContext, Future }

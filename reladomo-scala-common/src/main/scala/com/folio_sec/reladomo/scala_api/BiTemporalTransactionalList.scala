@@ -18,7 +18,7 @@ package com.folio_sec.reladomo.scala_api
 
 import com.gs.fw.common.mithra.finder.Operation
 import com.gs.fw.common.mithra.util.DoWhileProcedure
-import com.gs.fw.finder.{ Navigation, OrderBy }
+import com.gs.fw.finder.OrderBy
 
 import scala.collection.JavaConverters._
 
