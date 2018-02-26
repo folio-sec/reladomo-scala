@@ -27,7 +27,7 @@ trait TransactionalObjectBase {
   /**
     * Returns the underlying MithraTransactionalObject. The object can be unsaved in database yet.
     */
-  protected val underlying: com.gs.fw.common.mithra.MithraTransactionalObject
+  protected val underlying: MithraTransactionalObject
 
   def copyDetachedValuesToOriginalOrInsertIfNew()(implicit tx: Transaction): MithraTransactionalObject = {
     underlying.copyDetachedValuesToOriginalOrInsertIfNew()

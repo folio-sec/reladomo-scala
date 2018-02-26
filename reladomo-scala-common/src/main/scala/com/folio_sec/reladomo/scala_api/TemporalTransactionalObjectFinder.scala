@@ -19,12 +19,7 @@ package com.folio_sec.reladomo.scala_api
 import com.folio_sec.reladomo.scala_api.aggregation.AggregateDataWrapper
 import com.folio_sec.reladomo.scala_api.exception.ReladomoException
 import com.gs.fw.common.mithra.attribute.{ Attribute, NumericAttribute }
-import com.gs.fw.common.mithra.{
-  AggregateList,
-  MithraDatedTransactionalList,
-  MithraDatedTransactionalObject,
-  MithraTransactionalObject
-}
+import com.gs.fw.common.mithra.{ AggregateList, MithraDatedTransactionalList, MithraDatedTransactionalObject }
 import com.gs.fw.finder.{ Navigation, OrderBy }
 
 /**
