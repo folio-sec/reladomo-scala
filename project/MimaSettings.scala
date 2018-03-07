@@ -20,7 +20,7 @@ object MimaSettings {
     // because first release for this twitter util version, no binary compatbile check
     Set.empty
   } else {
-    Set(2).map(patch => s"16.6.$patch")
+    Set(2).map(patch => s"16.6.$patch") ++ Set(0).map(patch => s"16.7.$patch")
   }
 
   val mimaSettings = MimaPlugin.mimaDefaultSettings ++ Seq(
