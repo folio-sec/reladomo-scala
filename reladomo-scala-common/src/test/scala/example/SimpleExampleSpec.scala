@@ -22,15 +22,11 @@ import java.util.concurrent.atomic.AtomicInteger
 import com.folio_sec.example.domain.people.scala_api.{ NewPerson, PersonFinder }
 import org.scalatest._
 import com.folio_sec.example.domain.simplebank.scala_api.customer._
-import com.folio_sec.example.domain.simplebank.scala_api.customer_account.{
-  CustomerAccountFinder,
-  CustomerAccountList,
-  NewCustomerAccount
-}
+import com.folio_sec.example.domain.simplebank.scala_api.customer_account.{ CustomerAccountFinder, NewCustomerAccount }
 import com.folio_sec.reladomo.scala_api._
 import com.folio_sec.reladomo.scala_api.configuration.DatabaseManager
-import com.gs.collections.api.set.primitive.IntSet
 import com.gs.fw.common.mithra.util.ConstantIntSet
+import org.eclipse.collections.api.set.primitive.IntSet
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ Await, ExecutionContext, Future }

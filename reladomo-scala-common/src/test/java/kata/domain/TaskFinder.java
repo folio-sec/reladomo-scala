@@ -9,6 +9,7 @@ import com.gs.fw.common.mithra.behavior.txparticipation.FullTransactionalPartici
 import com.gs.fw.common.mithra.behavior.txparticipation.ReadCacheWithOptimisticLockingTxParticipationMode;
 import com.gs.fw.common.mithra.cache.Cache;
 import com.gs.fw.common.mithra.cache.bean.I3O3L3;
+import com.gs.fw.common.mithra.extractor.Function;
 import com.gs.fw.common.mithra.extractor.NormalAndListValueSelector;
 import com.gs.fw.common.mithra.extractor.RelationshipHashStrategy;
 import com.gs.fw.common.mithra.finder.*;
@@ -217,7 +218,7 @@ public class TaskFinder
 			return TaskFinder.finderMethodMap.getAttributeByName(attributeName, this);
 		}
 
-		public com.gs.collections.api.block.function.Function getAttributeOrRelationshipSelector(String attributeName)
+		public Function getAttributeOrRelationshipSelector(String attributeName)
 		{
 			return TaskFinder.finderMethodMap.getAttributeOrRelationshipSelectorFunction(attributeName, this);
 		}
@@ -652,7 +653,7 @@ public class TaskFinder
 		return finder.getAttributeByName(attributeName);
 	}
 
-	public static com.gs.collections.api.block.function.Function getAttributeOrRelationshipSelector(String attributeName)
+	public static com.gs.fw.common.mithra.extractor.Function getAttributeOrRelationshipSelector(String attributeName)
 	{
 		return finder.getAttributeOrRelationshipSelector(attributeName);
 	}

@@ -195,7 +195,7 @@ public class ObjectSequenceFinder
 			return ObjectSequenceFinder.finderMethodMap.getAttributeByName(attributeName, this);
 		}
 
-		public com.gs.collections.api.block.function.Function getAttributeOrRelationshipSelector(String attributeName)
+		public com.gs.fw.common.mithra.extractor.Function getAttributeOrRelationshipSelector(String attributeName)
 		{
 			return ObjectSequenceFinder.finderMethodMap.getAttributeOrRelationshipSelectorFunction(attributeName, this);
 		}
@@ -548,7 +548,7 @@ public class ObjectSequenceFinder
 		return finder.getAttributeByName(attributeName);
 	}
 
-	public static com.gs.collections.api.block.function.Function getAttributeOrRelationshipSelector(String attributeName)
+	public static com.gs.fw.common.mithra.extractor.Function getAttributeOrRelationshipSelector(String attributeName)
 	{
 		return finder.getAttributeOrRelationshipSelector(attributeName);
 	}

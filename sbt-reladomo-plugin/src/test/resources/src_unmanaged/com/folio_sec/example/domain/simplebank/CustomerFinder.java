@@ -33,10 +33,10 @@ import com.gs.fw.common.mithra.portal.*;
 import com.gs.fw.common.mithra.remote.*;
 import com.gs.fw.common.mithra.transaction.MithraObjectPersister;
 import com.gs.fw.common.mithra.util.TimestampPool;
-import com.gs.collections.impl.map.mutable.UnifiedMap;
+import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 import java.io.Serializable;
 /**
-* This file was automatically generated using Mithra 16.7.0. Please do not modify it.
+* This file was automatically generated using Mithra 17.0.2. Please do not modify it.
 * Add custom logic to its subclass instead.
 */
 public class CustomerFinder
@@ -231,7 +231,7 @@ public class CustomerFinder
 			return CustomerFinder.finderMethodMap.getAttributeByName(attributeName, this);
 		}
 
-		public com.gs.collections.api.block.function.Function getAttributeOrRelationshipSelector(String attributeName)
+		public com.gs.fw.common.mithra.extractor.Function getAttributeOrRelationshipSelector(String attributeName)
 		{
 			return CustomerFinder.finderMethodMap.getAttributeOrRelationshipSelectorFunction(attributeName, this);
 		}
@@ -749,7 +749,7 @@ public class CustomerFinder
 		return finder.getAttributeByName(attributeName);
 	}
 
-	public static com.gs.collections.api.block.function.Function getAttributeOrRelationshipSelector(String attributeName)
+	public static com.gs.fw.common.mithra.extractor.Function getAttributeOrRelationshipSelector(String attributeName)
 	{
 		return finder.getAttributeOrRelationshipSelector(attributeName);
 	}

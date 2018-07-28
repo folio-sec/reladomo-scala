@@ -19,7 +19,6 @@
 
     <PackageName>com.folio_sec.example.domain.bitemporal</PackageName>
     <ClassName>BitemporalOrder</ClassName>
-    <Import>com.gs.collections.impl.set.mutable.primitive.IntHashSet</Import>
     <Import>com.gs.fw.common.mithra.util.DefaultInfinityTimestamp</Import>
     <DefaultTable>BITEMPORAL_ORDER</DefaultTable>
 

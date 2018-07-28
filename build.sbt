@@ -61,7 +61,7 @@ lazy val sbtReladomoPlugin = (project in file("sbt-reladomo-plugin"))
   .settings(baseSettings)
   .settings(
     name := "sbt-reladomo-plugin",
-    crossSbtVersions := Vector("0.13.17", "1.1.1"),
+    crossSbtVersions := Vector("0.13.17", "1.1.6"),
     sbtPlugin := true,
     libraryDependencies ++= Seq(
       ant,

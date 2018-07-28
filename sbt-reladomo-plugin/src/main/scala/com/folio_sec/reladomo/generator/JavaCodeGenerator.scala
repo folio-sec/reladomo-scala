@@ -37,6 +37,7 @@ abstract class JavaCodeGenerator(xmlFilePath: String,
                                  unmodifiableFilesOutputDir: String) {
 
   protected val generator = new MithraGenerator
+
   initialize()
 
   def generate(): Seq[File] = {
@@ -62,7 +63,8 @@ abstract class JavaCodeGenerator(xmlFilePath: String,
     generator.setNonGeneratedDir(modifiableFilesOutputDir)
     generator.setGeneratedDir(unmodifiableFilesOutputDir)
     generator.setXml(xmlFilePath)
-    generator.setGenerateGscListMethod(true)
+    generator.setGenerateGscListMethod(false)
+    generator.setGenerateEcListMethod(true)
   }
 
   protected def listJavaFiles(dir: String): Seq[File] = {

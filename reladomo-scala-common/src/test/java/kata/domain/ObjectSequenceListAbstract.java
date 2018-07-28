@@ -1,7 +1,6 @@
 package kata.domain;
 
 import com.gs.collections.api.list.MutableList;
-import com.gs.collections.impl.list.mutable.ListAdapter;
 import com.gs.fw.common.mithra.MithraObjectPortal;
 import com.gs.fw.common.mithra.MithraTransactionalList;
 import com.gs.fw.common.mithra.finder.Operation;
@@ -83,17 +82,6 @@ public class ObjectSequenceListAbstract extends DelegatingList<ObjectSequence> i
 	public MithraTransactionalList getNonPersistentGenericCopy()
 	{
 		return this.getNonPersistentCopy();
-	}
-
-	/**
-	* Return a view of this list that implements GS Collections MutableList API.
-	* Since the returned list will be operation-based, it is effectively read-only,
-	* so mutating methods will throw a RuntimeException.
-	* (Implemented by a light-weight adapter, not a copy)
-	*/
-	public MutableList<ObjectSequence> asGscList()
-	{
-		return ListAdapter.adapt(this);
 	}
 
 	public ObjectSequenceList merge(MithraTransactionalList<ObjectSequence> incoming, TopLevelMergeOptions<ObjectSequence> mergeOptions)

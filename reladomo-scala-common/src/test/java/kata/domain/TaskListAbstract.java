@@ -1,7 +1,6 @@
 package kata.domain;
 
 import com.gs.collections.api.list.MutableList;
-import com.gs.collections.impl.list.mutable.ListAdapter;
 import com.gs.fw.common.mithra.MithraDatedTransactionalList;
 import com.gs.fw.common.mithra.MithraObjectPortal;
 import com.gs.fw.common.mithra.MithraTransactionalList;
@@ -86,17 +85,6 @@ public class TaskListAbstract extends DelegatingList<Task> implements MithraDate
 	public MithraDatedTransactionalList getNonPersistentGenericCopy()
 	{
 		return this.getNonPersistentCopy();
-	}
-
-	/**
-	* Return a view of this list that implements GS Collections MutableList API.
-	* Since the returned list will be operation-based, it is effectively read-only,
-	* so mutating methods will throw a RuntimeException.
-	* (Implemented by a light-weight adapter, not a copy)
-	*/
-	public MutableList<Task> asGscList()
-	{
-		return ListAdapter.adapt(this);
 	}
 
 	public TaskList merge(MithraTransactionalList<Task> incoming, TopLevelMergeOptions<Task> mergeOptions)
