@@ -49,7 +49,6 @@ import com.gs.fw.common.mithra.portal.*;
 import com.gs.fw.common.mithra.remote.*;
 import com.gs.fw.common.mithra.transaction.MithraObjectPersister;
 import com.gs.fw.common.mithra.util.TimestampPool;
-import com.gs.collections.impl.map.mutable.UnifiedMap;
 import java.io.Serializable;
 /**
 * This file was automatically generated using Mithra 16.3.0. Please do not modify it.
@@ -224,7 +223,7 @@ public class PersonFinder
 			return PersonFinder.finderMethodMap.getAttributeByName(attributeName, this);
 		}
 
-		public com.gs.collections.api.block.function.Function getAttributeOrRelationshipSelector(String attributeName)
+		public Function getAttributeOrRelationshipSelector(String attributeName)
 		{
 			return PersonFinder.finderMethodMap.getAttributeOrRelationshipSelectorFunction(attributeName, this);
 		}

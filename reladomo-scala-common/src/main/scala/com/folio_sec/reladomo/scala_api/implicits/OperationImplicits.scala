@@ -18,9 +18,9 @@ package com.folio_sec.reladomo.scala_api.implicits
 
 import scala.language.implicitConversions
 import com.folio_sec.reladomo.scala_api.operation.OperationWrapper
-import com.gs.collections.impl.factory.primitive.{ IntSets, LongSets }
 import com.gs.fw.common.mithra.attribute._
 import com.gs.fw.common.mithra.finder.Operation
+import org.eclipse.collections.impl.factory.primitive.{ IntSets, LongSets }
 
 import scala.collection.JavaConverters._
 

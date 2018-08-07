@@ -7,8 +7,6 @@ import com.gs.fw.common.mithra.finder.*;
 import com.gs.fw.common.mithra.list.*;
 import com.gs.fw.common.mithra.list.merge.TopLevelMergeOptions;
 import com.gs.fw.finder.OrderBy;
-import com.gs.collections.api.list.MutableList;
-import com.gs.collections.impl.list.mutable.ListAdapter;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.*;
@@ -23,7 +21,7 @@ import com.gs.fw.common.mithra.notification.listener.*;
 import com.gs.fw.common.mithra.list.cursor.Cursor;
 import com.gs.fw.common.mithra.bulkloader.*;
 /**
-* This file was automatically generated using Mithra 16.7.0. Please do not modify it.
+* This file was automatically generated using Mithra 17.0.2. Please do not modify it.
 * Add custom logic to its subclass instead.
 */
 // Generated from templates/transactional/ListAbstract.jsp
@@ -101,9 +99,9 @@ public class AllTypesListAbstract extends DelegatingList<AllTypes> implements Mi
 	* so mutating methods will throw a RuntimeException.
 	* (Implemented by a light-weight adapter, not a copy)
 	*/
-	public MutableList<AllTypes> asGscList()
+	public com.gs.collections.api.list.MutableList<AllTypes> asGscList()
 	{
-		return ListAdapter.adapt(this);
+		return com.gs.collections.impl.list.mutable.ListAdapter.adapt(this);
 	}
 
 	public AllTypesList merge(MithraTransactionalList<AllTypes> incoming, TopLevelMergeOptions<AllTypes> mergeOptions)

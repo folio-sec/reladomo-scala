@@ -20,7 +20,7 @@ import com.gs.fw.common.mithra.finder.RelatedFinder;
 import com.gs.fw.common.mithra.cache.offheap.MithraOffHeapDataObject;
 import com.gs.fw.common.mithra.cache.offheap.OffHeapDataStorage;
 /**
-* This file was automatically generated using Mithra 16.7.0. Please do not modify it.
+* This file was automatically generated using Mithra 17.0.2. Please do not modify it.
 * Add custom logic to its subclass instead.
 */
 public class CustomerData

@@ -1,19 +1,17 @@
 #!/bin/bash
-if [[ ${TRAVIS_SCALA_VERSION} = "scripted-test" ]]; then
+if [[ "${TRAVIS_SCALA_VERSION}" = "scripted-test" ]]; then
   sbt clean "project reladomoScalaCommon" +publishLocal \
-  && export TWITTER_UTIL_VERSION=17.12.0 \
+  && export TWITTER_UTIL_VERSION=18.7.0 \
   && sbt clean "project reladomoScalaTwitterCommon" +publishLocal \
-  && export TWITTER_UTIL_VERSION=17.11.0 \
+  && export TWITTER_UTIL_VERSION=18.6.0 \
   && sbt clean "project reladomoScalaTwitterCommon" +publishLocal \
-  && export TWITTER_UTIL_VERSION=17.10.0 \
-  && sbt clean "project reladomoScalaTwitterCommon" +publishLocal \
-  && export TWITTER_UTIL_VERSION=7.1.0 \
+  && export TWITTER_UTIL_VERSION=18.5.0 \
   && sbt clean "project reladomoScalaTwitterCommon" +publishLocal \
   && sbt clean \
       "project sbtReladomoPlugin" \
       "test" \
-      "^scripted" \
       "^publishLocal" \
+      "^scripted" \
   && cd sample && sbt clean test
 else
   sbt ++${TRAVIS_SCALA_VERSION} \
