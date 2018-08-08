@@ -7,7 +7,7 @@ object MimaSettings {
   // twitterUtilVersion which is not included in the previous reladomo-scala
   // PLEASE Add your twitter-util version if you are releasing with updating twitter-util
   // PLEASE REMOVE your twitter-util version if you are releasing without updating twitter-util
-  val firstReleaseTwitterUtilVersions = Set[String]()
+  val firstReleaseTwitterUtilVersions = Set[String]("18.7.0")
 
   // The `previousVersions` must be *ALL* the previous versions to be binary compatible (e.g. Set("16.6.0", "16.6.1") for "16.6.2-SNAPSHOT").
   // The following bad scenario is the reason we must obey the rule:
