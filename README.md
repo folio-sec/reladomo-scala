@@ -1,5 +1,7 @@
 # Reladomo for Scala
 
+**Note: This library is currently unmaintained.**
+
 [![Build Status](https://travis-ci.org/folio-sec/reladomo-scala.svg?branch=master)](https://travis-ci.org/folio-sec/reladomo-scala)
 
 ## Reladomo
